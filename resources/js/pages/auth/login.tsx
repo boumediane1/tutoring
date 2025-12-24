@@ -43,7 +43,7 @@ export default function Login({
                                     id="email"
                                     type="email"
                                     name="email"
-                                    value="cixuhydix@mailinator.com"
+                                    value="test@example.com"
                                     required
                                     autoFocus
                                     tabIndex={1}

@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 LanguageSeeder::class,
                 SpecialitySeeder::class,
-                TagSeeder::class
+                TagSeeder::class,
+                CountrySeeder::class
             ]);
     }
 }

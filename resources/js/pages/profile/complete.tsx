@@ -12,56 +12,26 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-const frameworks = [
-    {
-        value: 'next.js',
-        label: 'Next.js',
-    },
-    {
-        value: 'sveltekit',
-        label: 'SvelteKit',
-    },
-    {
-        value: 'nuxt.js',
-        label: 'Nuxt.js',
-    },
-    {
-        value: 'remix',
-        label: 'Remix',
-    },
-    {
-        value: 'astro',
-        label: 'Astro',
-    },
-];
+interface Props {
+    countries: { name: string }[];
+    languages: { language: string }[];
+    specialities: { title: string; tags: { title: string }[] }[];
+}
 
-const languages = [
-    {
-        value: 'english',
-        label: 'English',
-    },
-    {
-        value: 'arabic',
-        label: 'Arabic',
-    },
-];
-
-const tags = [
-    {
-        value: 'english',
-        label: 'English',
-    },
-    {
-        value: 'arabic',
-        label: 'Arabic',
-    },
-];
-
-const Complete = () => {
-    const [selectedFramework, setSelectedFramework] = useState('');
+const Complete = ({ countries, languages, specialities }: Props) => {
+    const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+    const [selectedSpecialities, setSelectedSpecialities] = useState<string[]>(
+        [],
+    );
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const { auth } = usePage<SharedData>().props;
+
+    const tags = specialities
+        .filter((speciality) =>
+            selectedSpecialities.includes(speciality.title.toLowerCase()),
+        )
+        .flatMap((speciality) => speciality.tags);
 
     return (
         <AppLayout>
@@ -76,9 +46,10 @@ const Complete = () => {
                     }}
                     transform={(data) => ({
                         ...data,
-                        selectedFramework,
-                        selectedLanguages,
-                        selectedTags,
+                        country: selectedCountry,
+                        languages: selectedLanguages,
+                        specialities: selectedSpecialities,
+                        tags: selectedTags,
                     })}
                     className="space-y-6"
                 >
@@ -141,10 +112,13 @@ const Complete = () => {
                                     <Label htmlFor="country">Country</Label>
 
                                     <Combobox
-                                        data={frameworks}
-                                        label="framework"
-                                        value={selectedFramework}
-                                        setValue={setSelectedFramework}
+                                        data={countries.map((country) => ({
+                                            value: country.name.toLowerCase(),
+                                            label: country.name,
+                                        }))}
+                                        placeholder="Choose country..."
+                                        value={selectedCountry}
+                                        setValue={setSelectedCountry}
                                     />
 
                                     <InputError className="mt-2" message={''} />
@@ -156,10 +130,13 @@ const Complete = () => {
                                     </Label>
 
                                     <MultiSelect
-                                        options={languages}
+                                        options={languages.map((language) => ({
+                                            value: language.language.toLowerCase(),
+                                            label: language.language,
+                                        }))}
                                         value={selectedLanguages}
                                         onValueChange={setSelectedLanguages}
-                                        placeholder="Choose frameworks..."
+                                        placeholder="Choose lanagues..."
                                     />
 
                                     <InputError className="mt-2" message={''} />
@@ -171,7 +148,28 @@ const Complete = () => {
                                     </Label>
 
                                     <MultiSelect
-                                        options={tags}
+                                        options={specialities.map(
+                                            (speciality) => ({
+                                                value: speciality.title.toLowerCase(),
+                                                label: speciality.title,
+                                            }),
+                                        )}
+                                        value={selectedSpecialities}
+                                        onValueChange={setSelectedSpecialities}
+                                        placeholder="Choose tags..."
+                                    />
+
+                                    <InputError className="mt-2" message={''} />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="languages">Tags</Label>
+
+                                    <MultiSelect
+                                        options={tags.map((tag) => ({
+                                            value: tag.title.toLowerCase(),
+                                            label: tag.title,
+                                        }))}
                                         value={selectedTags}
                                         onValueChange={setSelectedTags}
                                         placeholder="Choose tags..."

@@ -18,12 +18,12 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 const Combobox = ({
     data,
-    label,
+    placeholder,
     value,
     setValue,
 }: {
     data: { value: string; label: string }[];
-    label: string;
+    placeholder: string;
     value: string;
     setValue: Dispatch<SetStateAction<string>>;
 }) => {
@@ -40,15 +40,15 @@ const Combobox = ({
                 >
                     {value
                         ? data.find((item) => item.value === value)?.label
-                        : `Select ${label}...`}
+                        : placeholder}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-[300px] p-0">
                 <Command>
-                    <CommandInput placeholder={`Search ${label}...`} />
+                    <CommandInput placeholder={`Search options...`} />
                     <CommandList>
-                        <CommandEmpty>No {label} found.</CommandEmpty>
+                        <CommandEmpty>No {placeholder} found.</CommandEmpty>
                         <CommandGroup>
                             {data.map((item) => (
                                 <CommandItem
