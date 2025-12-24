@@ -34,6 +34,11 @@ class ProfileCompleteUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+
+            'country' => 'required',
+            'languages' => 'required|array',
+            'specialities' => 'required|array',
+            'tags' => 'required|array',
         ];
     }
 }

@@ -7,8 +7,10 @@ use App\Models\Country;
 use App\Models\Language;
 use App\Models\Speciality;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class CompleteProfileController extends Controller
 {
@@ -23,6 +25,9 @@ class CompleteProfileController extends Controller
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function update(ProfileCompleteUpdateRequest $request, User $user)
     {
         $request->user()->fill($request->validated());
@@ -31,6 +36,11 @@ class CompleteProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
-        $request->user()->save();
+        DB::transaction(function () use ($request) {
+            $request->user()->save();
+            $request->user()->tutor->languages()->attach($request->validated('languages'));
+            $request->user()->tutor->specialities()->attach($request->validated('specialities'));
+            $request->user()->tutor->tags()->attach($request->validated('tags'));
+        });
     }
 }

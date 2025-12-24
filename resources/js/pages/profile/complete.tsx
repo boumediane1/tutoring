@@ -14,8 +14,12 @@ import { useState } from 'react';
 
 interface Props {
     countries: { name: string }[];
-    languages: { language: string }[];
-    specialities: { title: string; tags: { title: string }[] }[];
+    languages: { id: number; language: string }[];
+    specialities: {
+        id: number;
+        title: string;
+        tags: { id: number; title: string }[];
+    }[];
 }
 
 const Complete = ({ countries, languages, specialities }: Props) => {
@@ -29,9 +33,11 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
     const tags = specialities
         .filter((speciality) =>
-            selectedSpecialities.includes(speciality.title.toLowerCase()),
+            selectedSpecialities.includes(String(speciality.id)),
         )
         .flatMap((speciality) => speciality.tags);
+
+    console.log(selectedSpecialities);
 
     return (
         <AppLayout>
@@ -54,7 +60,6 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                     className="space-y-6"
                 >
                     {({ errors, processing, recentlySuccessful }) => {
-                        console.log('errors', errors);
                         return (
                             <>
                                 <div className="grid gap-2">
@@ -105,7 +110,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <Textarea name="bio"></Textarea>
 
-                                    <InputError className="mt-2" message={''} />
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.bio}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -121,7 +129,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                         setValue={setSelectedCountry}
                                     />
 
-                                    <InputError className="mt-2" message={''} />
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.country}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -131,7 +142,7 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <MultiSelect
                                         options={languages.map((language) => ({
-                                            value: language.language.toLowerCase(),
+                                            value: String(language.id),
                                             label: language.language,
                                         }))}
                                         value={selectedLanguages}
@@ -139,7 +150,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                         placeholder="Choose lanagues..."
                                     />
 
-                                    <InputError className="mt-2" message={''} />
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.languages}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -150,7 +164,7 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                     <MultiSelect
                                         options={specialities.map(
                                             (speciality) => ({
-                                                value: speciality.title.toLowerCase(),
+                                                value: String(speciality.id),
                                                 label: speciality.title,
                                             }),
                                         )}
@@ -159,7 +173,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                         placeholder="Choose tags..."
                                     />
 
-                                    <InputError className="mt-2" message={''} />
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.specialities}
+                                    />
                                 </div>
 
                                 <div className="grid gap-2">
@@ -167,7 +184,7 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <MultiSelect
                                         options={tags.map((tag) => ({
-                                            value: tag.title.toLowerCase(),
+                                            value: String(tag.id),
                                             label: tag.title,
                                         }))}
                                         value={selectedTags}
@@ -175,7 +192,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                         placeholder="Choose tags..."
                                     />
 
-                                    <InputError className="mt-2" message={''} />
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.tags}
+                                    />
                                 </div>
 
                                 <div className="flex items-center gap-4">
