@@ -12,7 +12,23 @@ import { Transition } from '@headlessui/react';
 import { Form, Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
+interface Tutor {
+    country: {
+        name: string;
+    };
+    languages: {
+        language: string;
+    }[];
+    specialities: {
+        title: string;
+    }[];
+    tags: {
+        title: string;
+    }[];
+}
+
 interface Props {
+    tutor: Tutor;
     countries: { name: string }[];
     languages: { id: number; language: string }[];
     specialities: {
@@ -22,22 +38,29 @@ interface Props {
     }[];
 }
 
-const Complete = ({ countries, languages, specialities }: Props) => {
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-    const [selectedSpecialities, setSelectedSpecialities] = useState<string[]>(
-        [],
+const Complete = ({ tutor, countries, languages, specialities }: Props) => {
+    const [selectedCountry, setSelectedCountry] = useState(tutor.country.name);
+    const [selectedLanguages, setSelectedLanguages] = useState(
+        tutor.languages.map((l) => l.language),
     );
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedSpecialities, setSelectedSpecialities] = useState(
+        tutor.specialities.map((s) => s.title),
+    );
+    const [selectedTags, setSelectedTags] = useState(
+        tutor.tags.map((t) => t.title),
+    );
     const { auth } = usePage<SharedData>().props;
 
     const tags = specialities
-        .filter((speciality) =>
-            selectedSpecialities.includes(String(speciality.id)),
-        )
-        .flatMap((speciality) => speciality.tags);
-
-    console.log(selectedSpecialities);
+        .filter((speciality) => selectedSpecialities.includes(speciality.title))
+        .flatMap((speciality) =>
+            speciality.tags.map((tag) => ({
+                ...tag,
+                selected: tutor.tags
+                    .map((tag) => tag.title)
+                    .includes(tag.title),
+            })),
+        );
 
     return (
         <AppLayout>
@@ -121,7 +144,7 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <Combobox
                                         data={countries.map((country) => ({
-                                            value: country.name.toLowerCase(),
+                                            value: country.name,
                                             label: country.name,
                                         }))}
                                         placeholder="Choose country..."
@@ -142,10 +165,10 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <MultiSelect
                                         options={languages.map((language) => ({
-                                            value: String(language.id),
+                                            value: language.language,
                                             label: language.language,
                                         }))}
-                                        value={selectedLanguages}
+                                        defaultValue={selectedLanguages}
                                         onValueChange={setSelectedLanguages}
                                         placeholder="Choose lanagues..."
                                     />
@@ -164,11 +187,11 @@ const Complete = ({ countries, languages, specialities }: Props) => {
                                     <MultiSelect
                                         options={specialities.map(
                                             (speciality) => ({
-                                                value: String(speciality.id),
+                                                value: speciality.title,
                                                 label: speciality.title,
                                             }),
                                         )}
-                                        value={selectedSpecialities}
+                                        defaultValue={selectedSpecialities}
                                         onValueChange={setSelectedSpecialities}
                                         placeholder="Choose tags..."
                                     />
@@ -184,10 +207,12 @@ const Complete = ({ countries, languages, specialities }: Props) => {
 
                                     <MultiSelect
                                         options={tags.map((tag) => ({
-                                            value: String(tag.id),
+                                            value: tag.title,
                                             label: tag.title,
                                         }))}
-                                        value={selectedTags}
+                                        defaultValue={tags
+                                            .filter((tag) => tag.selected)
+                                            .map((tag) => tag.title)}
                                         onValueChange={setSelectedTags}
                                         placeholder="Choose tags..."
                                     />
