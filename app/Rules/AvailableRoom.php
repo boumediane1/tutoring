@@ -8,8 +8,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 readonly class AvailableRoom implements ValidationRule
 {
-    public function __construct(private string $start, private string $end) {}
-
     /**
      * Run the validation rule.
      *
@@ -19,8 +17,8 @@ readonly class AvailableRoom implements ValidationRule
     {
         $exists = Booking::query()
             ->where('tutor_id', request('tutor_id'))
-            ->where('start', '<', $this->end)
-            ->where('end', '>', $this->start)
+            ->where('start', '<', request('end'))
+            ->where('end', '>', request('start'))
             ->exists();
 
         if ($exists) {

@@ -70,7 +70,22 @@ it('disallows booking half an hour sessions', function () {
         'end' => '2026-01-02T08:30:00Z',
     ]);
 
-    $response->assertSessionHasErrors(['start']);
+    $response->assertSessionHasErrors(['start' => 'The session must be booked in full hours.']);
+});
+
+it('disallows booking sessions that do not start at the beginning of an hour', function () {
+    $user = User::factory()->create(['role' => 'student']);
+    $this->actingAs($user);
+
+    $tutor = Tutor::factory()->for(User::factory())->create();
+
+    $response = $this->post('/bookings', [
+        'tutor_id' => $tutor->id,
+        'start' => '2026-01-02T08:15:00Z',
+        'end' => '2026-01-02T09:15:00Z',
+    ]);
+
+    $response->assertSessionHasErrors(['start' => 'The session must start at the beginning of an hour (e.g., 10:00).']);
 });
 
 it('can fetch bookings for a tutor', function () {

@@ -20,9 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('tutor/dashboard');
         })->name('tutor.dashboard');
 
-        Route::get('student/dashboard', function () {
-            return Inertia::render('student/dashboard');
-        })->name('student.dashboard');
+        Route::get('tutor/bookings', [\App\Http\Controllers\Tutor\BookingController::class, 'index'])->name('tutor.bookings.index');
+        Route::patch('tutor/bookings/{booking}', [\App\Http\Controllers\Tutor\BookingController::class, 'update'])->name('tutor.bookings.update');
     });
 
     Route::middleware(EnsureUserHasRole::class.':student')->group(function () {
