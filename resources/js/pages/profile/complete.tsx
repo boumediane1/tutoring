@@ -13,9 +13,10 @@ import { Form, Head, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 interface Tutor {
+    bio: string | null;
     country: {
         name: string;
-    };
+    } | null;
     languages: {
         language: string;
     }[];
@@ -39,7 +40,9 @@ interface Props {
 }
 
 const Complete = ({ tutor, countries, languages, specialities }: Props) => {
-    const [selectedCountry, setSelectedCountry] = useState(tutor.country.name);
+    const [selectedCountry, setSelectedCountry] = useState(
+        tutor.country?.name ?? '',
+    );
     const [selectedLanguages, setSelectedLanguages] = useState(
         tutor.languages.map((l) => l.language),
     );
@@ -62,6 +65,10 @@ const Complete = ({ tutor, countries, languages, specialities }: Props) => {
             })),
         );
 
+    const filteredSelectedTags = selectedTags.filter((tag) =>
+        tags.some((t) => t.title === tag),
+    );
+
     return (
         <AppLayout>
             <Head title="Dashboard" />
@@ -78,7 +85,7 @@ const Complete = ({ tutor, countries, languages, specialities }: Props) => {
                         country: selectedCountry,
                         languages: selectedLanguages,
                         specialities: selectedSpecialities,
-                        tags: selectedTags,
+                        tags: filteredSelectedTags,
                     })}
                     className="space-y-6"
                 >
@@ -131,7 +138,10 @@ const Complete = ({ tutor, countries, languages, specialities }: Props) => {
                                         </span>
                                     </Label>
 
-                                    <Textarea name="bio"></Textarea>
+                                    <Textarea
+                                        name="bio"
+                                        defaultValue={tutor.bio ?? ''}
+                                    ></Textarea>
 
                                     <InputError
                                         className="mt-2"
@@ -210,9 +220,7 @@ const Complete = ({ tutor, countries, languages, specialities }: Props) => {
                                             value: tag.title,
                                             label: tag.title,
                                         }))}
-                                        defaultValue={tags
-                                            .filter((tag) => tag.selected)
-                                            .map((tag) => tag.title)}
+                                        defaultValue={filteredSelectedTags}
                                         onValueChange={setSelectedTags}
                                         placeholder="Choose tags..."
                                     />

@@ -14,6 +14,8 @@ class Tutor extends Model
 
     protected $fillable = [
         'user_id',
+        'bio',
+        'country_id',
     ];
 
     public function user(): BelongsTo

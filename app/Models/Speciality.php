@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Speciality extends Model
 {
-    public function tags(): HasMany {
+    protected $fillable = ['title'];
+
+    public $timestamps = false;
+
+    public function tags(): HasMany
+    {
         return $this->hasMany(Tag::class);
     }
 }
