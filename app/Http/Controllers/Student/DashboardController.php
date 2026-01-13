@@ -15,7 +15,6 @@ class DashboardController extends Controller
     {
         $tutors = Tutor::query()
             ->with(['user', 'country', 'specialities', 'tags'])
-            ->select('tutors.*')
             ->when($request->input('speciality'), function (Builder $query, string $speciality) {
                 $query->whereRelation('specialities', 'title', $speciality);
             })

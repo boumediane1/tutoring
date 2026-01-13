@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,8 @@ class TutorFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory()->state(['role' => 'tutor']),
+            'country_id' => Country::query()->inRandomOrder()->first()?->id ?? Country::factory(),
         ];
     }
 }

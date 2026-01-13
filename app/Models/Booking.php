@@ -15,6 +15,10 @@ class Booking extends Model
         'start',
         'end',
         'student_id',
-        'confirmed',
+        'status',
+    ];
+
+    protected $casts = [
+        'status' => 'string',
     ];
 }

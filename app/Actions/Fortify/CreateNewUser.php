@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Student;
 use App\Models\Tutor;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +16,7 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param array<string, string> $input
+     * @param  array<string, string>  $input
      */
     public function create(array $input): User
     {
@@ -36,12 +37,18 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
-            'role' => $input['role']
+            'role' => $input['role'],
         ]);
 
         if ($validated['role'] === 'tutor') {
             Tutor::query()->create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+            ]);
+        }
+
+        if ($validated['role'] === 'student') {
+            Student::query()->create([
+                'user_id' => $user->id,
             ]);
         }
 

@@ -3,8 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\AvailableRoom;
-use Carbon\Carbon;
-use Closure;
+use App\Rules\FullHours;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookingRequest extends FormRequest
@@ -30,14 +29,7 @@ class StoreBookingRequest extends FormRequest
                 'required',
                 'date',
                 new AvailableRoom($this->input('start') ?? '', $this->input('end') ?? ''),
-                function (string $attribute, mixed $value, Closure $fail) {
-                    $start = Carbon::parse($value);
-                    $end = Carbon::parse($this->input('end'));
-
-                    if ($start->diffInMinutes($end) % 60 !== 0) {
-                        $fail('The session must be booked in full hours.');
-                    }
-                },
+                new FullHours($this->input('end')),
             ],
             'end' => 'required|date|after:start',
         ];

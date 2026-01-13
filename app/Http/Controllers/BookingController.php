@@ -13,29 +13,39 @@ class BookingController extends Controller
     public function index(Tutor $tutor): Response
     {
         $tutor->load('user');
+        $student = auth()->user()->student;
 
         $bookings = Booking::query()
             ->where('tutor_id', $tutor->id)
-            ->get(['id', 'start', 'end', 'confirmed']);
+            ->get(['id', 'start', 'end', 'status', 'student_id']);
 
         return Inertia::render('student/booking-page', [
             'tutor' => [
                 'id' => $tutor->id,
                 'name' => $tutor->user->name,
             ],
-            'bookings' => $bookings->map(fn ($booking) => [
-                'id' => (string) $booking->id,
-                'title' => $booking->confirmed ? 'Booked' : 'Pending',
-                'start' => $booking->start,
-                'end' => $booking->end,
-                'color' => $booking->confirmed ? '#10b981' : '#f59e0b',
-            ]),
+            'bookings' => $bookings->map(function ($booking) use ($student) {
+                $isOwnBooking = $booking->student_id === $student->id;
+
+                return [
+                    'id' => (string) $booking->id,
+                    'title' => $isOwnBooking ? ucfirst($booking->status) : 'Unavailable',
+                    'start' => $booking->start,
+                    'end' => $booking->end,
+                    'color' => $isOwnBooking ? match ($booking->status) {
+                        'confirmed' => '#10b981',
+                        'pending' => '#f59e0b',
+                        'canceled' => '#ef4444',
+                        default => '#6b7280',
+                    } : '#94a3b8', // Slate-400 for unavailable
+                ];
+            }),
         ]);
     }
 
     public function store(StoreBookingRequest $request)
     {
-        $student = $request->user()->student()->firstOrCreate([]);
+        $student = $request->user()->student;
 
         $booking = new Booking([
             'student_id' => $student->id,
