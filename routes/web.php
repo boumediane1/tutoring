@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(EnsureUserHasRole::class.':student')->group(function () {
         Route::post('bookings', [BookingController::class, 'store'])->name('booking.store');
+        Route::get('bookings/{tutor}', [BookingController::class, 'index'])->name('booking.index');
     });
 
     Route::get('profile/complete', [CompleteProfileController::class, 'edit'])->name('profile.complete.edit');

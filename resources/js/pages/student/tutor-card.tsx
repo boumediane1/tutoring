@@ -1,7 +1,10 @@
+import { index } from '@/actions/App/Http/Controllers/BookingController';
 import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
 import { GraduationCap, Star } from 'lucide-react';
 
 const TutorCard = ({
+    id,
     name,
     country_code,
     specialities,
@@ -11,6 +14,7 @@ const TutorCard = ({
     lessons,
     image,
 }: {
+    id: number;
     name: string;
     country_code?: string;
     specialities: string[];
@@ -75,8 +79,8 @@ const TutorCard = ({
             <div className="flex flex-col justify-between">
                 <div className="space-y-2"></div>
 
-                <Button size="lg" className="cursor-pointer">
-                    Book $20/h
+                <Button size="lg" className="cursor-pointer" asChild>
+                    <Link href={index.url(id)}>Book $20/h</Link>
                 </Button>
             </div>
         </div>

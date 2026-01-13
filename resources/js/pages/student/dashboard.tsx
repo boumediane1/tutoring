@@ -34,6 +34,7 @@ export default function Dashboard({
     specialities,
 }: {
     tutors: {
+        id: number;
         user: { name: string; image: string };
         country?: { code: string };
         specialities: Speciality[];
@@ -132,6 +133,7 @@ export default function Dashboard({
                     {tutors.map((tutor, index) => (
                         <TutorCard
                             key={index}
+                            id={tutor.id}
                             name={tutor.user.name}
                             country_code={tutor.country?.code.toLowerCase()}
                             tags={tutor.tags.map((t) => t.title)}
