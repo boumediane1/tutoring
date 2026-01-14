@@ -1,4 +1,5 @@
 import ProfileDetailsController from '@/actions/App/Http/Controllers/ProfileDetailsController';
+import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { MultiSelect } from '@/components/multi-select';
 import { Button } from '@/components/ui/button';
@@ -73,189 +74,202 @@ const Details = ({ tutor, countries, languages, specialities }: Props) => {
         <AppLayout>
             <Head title="Profile Details" />
 
-            <div className="grid grid-cols-2 p-4">
-                <Form
-                    action={ProfileDetailsController.update().url}
-                    method={ProfileDetailsController.update().method}
-                    options={{
-                        preserveScroll: true,
-                    }}
-                    transform={(data) => ({
-                        ...data,
-                        country: selectedCountry,
-                        languages: selectedLanguages,
-                        specialities: selectedSpecialities,
-                        tags: filteredSelectedTags,
-                    })}
-                    className="space-y-6"
-                >
-                    {({ errors, processing, recentlySuccessful }) => {
-                        return (
-                            <>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+            <div className="flex flex-col p-4">
+                <Heading
+                    title="Profile Details"
+                    description="Update your tutor profile information."
+                />
 
-                                    <Input
-                                        id="name"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
-                                        autoComplete="name"
-                                        placeholder="Full name"
-                                    />
+                <div className="grid grid-cols-2">
+                    <Form
+                        action={ProfileDetailsController.update().url}
+                        method={ProfileDetailsController.update().method}
+                        options={{
+                            preserveScroll: true,
+                        }}
+                        transform={(data) => ({
+                            ...data,
+                            country: selectedCountry,
+                            languages: selectedLanguages,
+                            specialities: selectedSpecialities,
+                            tags: filteredSelectedTags,
+                        })}
+                        className="space-y-6"
+                    >
+                        {({ errors, processing, recentlySuccessful }) => {
+                            return (
+                                <>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="name">Name</Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.name}
-                                    />
-                                </div>
+                                        <Input
+                                            id="name"
+                                            className="mt-1 block w-full"
+                                            defaultValue={auth.user.name}
+                                            name="name"
+                                            autoComplete="name"
+                                            placeholder="Full name"
+                                        />
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="email">Email address</Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.name}
+                                        />
+                                    </div>
 
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.email}
-                                        name="email"
-                                        required
-                                        autoComplete="username"
-                                        placeholder="Email address"
-                                    />
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="email">
+                                            Email address
+                                        </Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.email}
-                                    />
-                                </div>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            className="mt-1 block w-full"
+                                            defaultValue={auth.user.email}
+                                            name="email"
+                                            required
+                                            autoComplete="username"
+                                            placeholder="Email address"
+                                        />
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="bio">
-                                        Bio{' '}
-                                        <span className="text-gray-500">
-                                            (optional)
-                                        </span>
-                                    </Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.email}
+                                        />
+                                    </div>
 
-                                    <Textarea
-                                        name="bio"
-                                        defaultValue={tutor.bio ?? ''}
-                                    ></Textarea>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="bio">
+                                            Bio{' '}
+                                            <span className="text-gray-500">
+                                                (optional)
+                                            </span>
+                                        </Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.bio}
-                                    />
-                                </div>
+                                        <Textarea
+                                            name="bio"
+                                            defaultValue={tutor.bio ?? ''}
+                                        ></Textarea>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="country">Country</Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.bio}
+                                        />
+                                    </div>
 
-                                    <Combobox
-                                        data={countries.map((country) => ({
-                                            value: country.name,
-                                            label: country.name,
-                                        }))}
-                                        placeholder="Choose country..."
-                                        value={selectedCountry}
-                                        setValue={setSelectedCountry}
-                                    />
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="country">Country</Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.country}
-                                    />
-                                </div>
+                                        <Combobox
+                                            data={countries.map((country) => ({
+                                                value: country.name,
+                                                label: country.name,
+                                            }))}
+                                            placeholder="Choose country..."
+                                            value={selectedCountry}
+                                            setValue={setSelectedCountry}
+                                        />
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="languages">
-                                        Spoken languages
-                                    </Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.country}
+                                        />
+                                    </div>
 
-                                    <MultiSelect
-                                        options={languages.map((language) => ({
-                                            value: language.language,
-                                            label: language.language,
-                                        }))}
-                                        defaultValue={selectedLanguages}
-                                        onValueChange={setSelectedLanguages}
-                                        placeholder="Choose lanagues..."
-                                    />
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="languages">
+                                            Spoken languages
+                                        </Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.languages}
-                                    />
-                                </div>
+                                        <MultiSelect
+                                            options={languages.map(
+                                                (language) => ({
+                                                    value: language.language,
+                                                    label: language.language,
+                                                }),
+                                            )}
+                                            defaultValue={selectedLanguages}
+                                            onValueChange={setSelectedLanguages}
+                                            placeholder="Choose lanagues..."
+                                        />
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="languages">
-                                        Specialities
-                                    </Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.languages}
+                                        />
+                                    </div>
 
-                                    <MultiSelect
-                                        options={specialities.map(
-                                            (speciality) => ({
-                                                value: speciality.title,
-                                                label: speciality.title,
-                                            }),
-                                        )}
-                                        defaultValue={selectedSpecialities}
-                                        onValueChange={setSelectedSpecialities}
-                                        placeholder="Choose tags..."
-                                    />
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="languages">
+                                            Specialities
+                                        </Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.specialities}
-                                    />
-                                </div>
+                                        <MultiSelect
+                                            options={specialities.map(
+                                                (speciality) => ({
+                                                    value: speciality.title,
+                                                    label: speciality.title,
+                                                }),
+                                            )}
+                                            defaultValue={selectedSpecialities}
+                                            onValueChange={
+                                                setSelectedSpecialities
+                                            }
+                                            placeholder="Choose tags..."
+                                        />
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="languages">Tags</Label>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.specialities}
+                                        />
+                                    </div>
 
-                                    <MultiSelect
-                                        options={tags.map((tag) => ({
-                                            value: tag.title,
-                                            label: tag.title,
-                                        }))}
-                                        defaultValue={filteredSelectedTags}
-                                        onValueChange={setSelectedTags}
-                                        placeholder="Choose tags..."
-                                    />
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="languages">Tags</Label>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.tags}
-                                    />
-                                </div>
+                                        <MultiSelect
+                                            options={tags.map((tag) => ({
+                                                value: tag.title,
+                                                label: tag.title,
+                                            }))}
+                                            defaultValue={filteredSelectedTags}
+                                            onValueChange={setSelectedTags}
+                                            placeholder="Choose tags..."
+                                        />
 
-                                <div className="flex items-center gap-4">
-                                    <Button
-                                        disabled={processing}
-                                        data-test="update-profile-button"
-                                        className="cursor-pointer"
-                                    >
-                                        Save
-                                    </Button>
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.tags}
+                                        />
+                                    </div>
 
-                                    <Transition
-                                        show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <p className="text-sm text-neutral-600">
-                                            Saved
-                                        </p>
-                                    </Transition>
-                                </div>
-                            </>
-                        );
-                    }}
-                </Form>
+                                    <div className="flex items-center gap-4">
+                                        <Button
+                                            disabled={processing}
+                                            data-test="update-profile-button"
+                                            className="cursor-pointer"
+                                        >
+                                            Save
+                                        </Button>
+
+                                        <Transition
+                                            show={recentlySuccessful}
+                                            enter="transition ease-in-out"
+                                            enterFrom="opacity-0"
+                                            leave="transition ease-in-out"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <p className="text-sm text-neutral-600">
+                                                Saved
+                                            </p>
+                                        </Transition>
+                                    </div>
+                                </>
+                            );
+                        }}
+                    </Form>
+                </div>
             </div>
         </AppLayout>
     );

@@ -1,4 +1,5 @@
 import { update } from '@/actions/App/Http/Controllers/Tutor/BookingController';
+import Heading from '@/components/heading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes/tutor';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { Calendar, Check, CheckCircle, Clock, X } from 'lucide-react';
+import { Calendar, CheckCircle, Clock } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -66,11 +67,18 @@ export default function Dashboard({
     };
 
     const handleStatusUpdate = (
-        bookingId: number,
+        id: number,
         status: 'confirmed' | 'rejected',
     ) => {
+        const action = status === 'confirmed' ? 'approve' : 'reject';
+        if (
+            !confirm(`Are you sure you want to ${action} this booking request?`)
+        ) {
+            return;
+        }
+
         router.patch(
-            update(bookingId).url,
+            update(id).url,
             { status },
             {
                 preserveScroll: true,
@@ -83,6 +91,11 @@ export default function Dashboard({
             <Head title="Tutor Dashboard" />
 
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <Heading
+                    title="Dashboard"
+                    description="Overview of your tutoring sessions and requests."
+                />
+
                 <div className="grid gap-4 md:grid-cols-3">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -173,7 +186,7 @@ export default function Dashboard({
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
-                                                    className="h-8 w-8 border-red-200 p-0 text-red-600 hover:bg-red-50 hover:text-red-700"
+                                                    className="h-8 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
                                                     onClick={() =>
                                                         handleStatusUpdate(
                                                             booking.id,
@@ -181,14 +194,11 @@ export default function Dashboard({
                                                         )
                                                     }
                                                 >
-                                                    <X className="h-4 w-4" />
-                                                    <span className="sr-only">
-                                                        Reject
-                                                    </span>
+                                                    Reject
                                                 </Button>
                                                 <Button
                                                     size="sm"
-                                                    className="h-8 w-8 bg-green-600 p-0 hover:bg-green-700"
+                                                    className="h-8 bg-green-600 hover:bg-green-700"
                                                     onClick={() =>
                                                         handleStatusUpdate(
                                                             booking.id,
@@ -196,10 +206,7 @@ export default function Dashboard({
                                                         )
                                                     }
                                                 >
-                                                    <Check className="h-4 w-4" />
-                                                    <span className="sr-only">
-                                                        Accept
-                                                    </span>
+                                                    Approve
                                                 </Button>
                                             </div>
                                         </div>

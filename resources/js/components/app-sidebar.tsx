@@ -1,4 +1,5 @@
 import { edit as profileDetails } from '@/actions/App/Http/Controllers/ProfileDetailsController';
+import { index as tutorBookings } from '@/actions/App/Http/Controllers/Tutor/BookingController';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -15,7 +16,7 @@ import { dashboard as studentDashboard } from '@/routes/student';
 import { dashboard as tutorDashboard } from '@/routes/tutor';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, UserCircle } from 'lucide-react';
+import { BookOpen, LayoutGrid, UserCircle } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -33,6 +34,12 @@ export function AppSidebar() {
     ];
 
     if (auth.user.role === 'tutor') {
+        mainNavItems.push({
+            title: 'Tutor Bookings',
+            href: tutorBookings(),
+            icon: BookOpen,
+        });
+
         mainNavItems.push({
             title: 'Profile Details',
             href: profileDetails(),
