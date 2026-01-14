@@ -1,4 +1,5 @@
 import { update } from '@/actions/App/Http/Controllers/Tutor/BookingController';
+import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -90,10 +91,12 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Bookings" />
-            <div className="flex flex-col gap-4 p-4">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">My Bookings</h1>
-                </div>
+
+            <div className="px-4 py-6">
+                <Heading
+                    title="My Bookings"
+                    description="Overview of your bookings."
+                />
 
                 <FullCalendar
                     plugins={[timeGridPlugin, interactionPlugin]}
@@ -111,101 +114,101 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
                     height="700px"
                     expandRows={true}
                 />
-            </div>
 
-            <Dialog
-                open={!!selectedBooking}
-                onOpenChange={(open) => !open && setSelectedBooking(null)}
-            >
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Booking Details</DialogTitle>
-                        <DialogDescription>
-                            Review the booking information below.
-                        </DialogDescription>
-                    </DialogHeader>
+                <Dialog
+                    open={!!selectedBooking}
+                    onOpenChange={(open) => !open && setSelectedBooking(null)}
+                >
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Booking Details</DialogTitle>
+                            <DialogDescription>
+                                Review the booking information below.
+                            </DialogDescription>
+                        </DialogHeader>
 
-                    {selectedBooking && (
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <span className="text-sm font-medium text-muted-foreground">
-                                    Student:
-                                </span>
-                                <span className="col-span-3 text-sm">
-                                    {selectedBooking.student.name}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <span className="text-sm font-medium text-muted-foreground">
-                                    Email:
-                                </span>
-                                <span className="col-span-3 text-sm">
-                                    {selectedBooking.student.email}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <span className="text-sm font-medium text-muted-foreground">
-                                    Time:
-                                </span>
-                                <span className="col-span-3 text-sm">
-                                    {new Date(
-                                        selectedBooking.start,
-                                    ).toLocaleString()}{' '}
-                                    -{' '}
-                                    {new Date(
-                                        selectedBooking.end,
-                                    ).toLocaleTimeString([], {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })}
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <span className="text-sm font-medium text-muted-foreground">
-                                    Status:
-                                </span>
-                                <div className="col-span-3">
-                                    {getStatusBadge(selectedBooking.status)}
+                        {selectedBooking && (
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <span className="text-sm font-medium text-muted-foreground">
+                                        Student:
+                                    </span>
+                                    <span className="col-span-3 text-sm">
+                                        {selectedBooking.student.name}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <span className="text-sm font-medium text-muted-foreground">
+                                        Email:
+                                    </span>
+                                    <span className="col-span-3 text-sm">
+                                        {selectedBooking.student.email}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <span className="text-sm font-medium text-muted-foreground">
+                                        Time:
+                                    </span>
+                                    <span className="col-span-3 text-sm">
+                                        {new Date(
+                                            selectedBooking.start,
+                                        ).toLocaleString()}{' '}
+                                        -{' '}
+                                        {new Date(
+                                            selectedBooking.end,
+                                        ).toLocaleTimeString([], {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
+                                    </span>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <span className="text-sm font-medium text-muted-foreground">
+                                        Status:
+                                    </span>
+                                    <div className="col-span-3">
+                                        {getStatusBadge(selectedBooking.status)}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-
-                    <DialogFooter>
-                        {selectedBooking?.status === 'pending' && (
-                            <div className="flex w-full justify-end gap-2">
-                                <Button
-                                    variant="outline"
-                                    onClick={() =>
-                                        handleStatusUpdate(
-                                            selectedBooking.id,
-                                            'rejected',
-                                        )
-                                    }
-                                >
-                                    Reject
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        handleStatusUpdate(
-                                            selectedBooking.id,
-                                            'confirmed',
-                                        )
-                                    }
-                                >
-                                    Accept
-                                </Button>
-                            </div>
                         )}
-                        <Button
-                            variant="ghost"
-                            onClick={() => setSelectedBooking(null)}
-                        >
-                            Close
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+
+                        <DialogFooter>
+                            {selectedBooking?.status === 'pending' && (
+                                <div className="flex w-full justify-end gap-2">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() =>
+                                            handleStatusUpdate(
+                                                selectedBooking.id,
+                                                'rejected',
+                                            )
+                                        }
+                                    >
+                                        Reject
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            handleStatusUpdate(
+                                                selectedBooking.id,
+                                                'confirmed',
+                                            )
+                                        }
+                                    >
+                                        Accept
+                                    </Button>
+                                </div>
+                            )}
+                            <Button
+                                variant="ghost"
+                                onClick={() => setSelectedBooking(null)}
+                            >
+                                Close
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
         </AppLayout>
     );
 }
