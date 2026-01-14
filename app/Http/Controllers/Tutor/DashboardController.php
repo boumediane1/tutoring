@@ -21,21 +21,14 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        $pendingBookings = $tutor->bookings()
-            ->with('student.user')
-            ->where('status', 'pending')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
         $stats = [
             'total_sessions' => $tutor->bookings()->where('status', 'confirmed')->count(),
-            'pending_requests' => $pendingBookings->count(),
+            'pending_requests' => $tutor->bookings()->where('status', 'pending')->count(),
             'upcoming_sessions' => $upcomingBookings->count(),
         ];
 
         return Inertia::render('tutor/dashboard', [
             'upcomingBookings' => $upcomingBookings,
-            'pendingBookings' => $pendingBookings,
             'stats' => $stats,
         ]);
     }

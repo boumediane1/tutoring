@@ -34,6 +34,6 @@ it('tutor can see their dashboard with stats and bookings', function () {
             ->where('stats.pending_requests', 1)
             ->where('stats.upcoming_sessions', 1)
             ->has('upcomingBookings', 1)
-            ->has('pendingBookings', 1)
+            ->missing('pendingBookings')
         );
 });

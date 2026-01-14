@@ -1,7 +1,5 @@
-import { update } from '@/actions/App/Http/Controllers/Tutor/BookingController';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -12,7 +10,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes/tutor';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { Calendar, CheckCircle, Clock } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -42,28 +40,9 @@ interface Props {
         upcoming_sessions: number;
     };
     upcomingBookings: Booking[];
-    pendingBookings: Booking[];
 }
 
-export default function Dashboard({
-    stats,
-    upcomingBookings,
-    pendingBookings,
-}: Props) {
-    const { patch, processing, setData } = useForm({
-        status: '' as 'confirmed' | 'rejected' | '',
-    });
-
-    const handleStatusUpdate = (
-        id: number,
-        status: 'confirmed' | 'rejected',
-    ) => {
-        setData('status', status);
-        patch(update(id).url, {
-            preserveScroll: true,
-        });
-    };
-
+export default function Dashboard({ stats, upcomingBookings }: Props) {
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             weekday: 'short',
@@ -121,8 +100,8 @@ export default function Dashboard({
                     </Card>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                    <Card className="col-span-4">
+                <div className="grid gap-4">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Upcoming Sessions</CardTitle>
                             <CardDescription>
@@ -161,69 +140,6 @@ export default function Dashboard({
                                                 <Badge variant="outline">
                                                     Confirmed
                                                 </Badge>
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="col-span-3">
-                        <CardHeader>
-                            <CardTitle>Pending Requests</CardTitle>
-                            <CardDescription>
-                                Approve or reject new booking requests.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-8">
-                                {pendingBookings.length === 0 ? (
-                                    <p className="text-sm text-muted-foreground">
-                                        No pending requests.
-                                    </p>
-                                ) : (
-                                    pendingBookings.map((booking) => (
-                                        <div
-                                            key={booking.id}
-                                            className="flex items-center"
-                                        >
-                                            <div className="space-y-1">
-                                                <p className="text-sm leading-none font-medium">
-                                                    {booking.student.user.name}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {formatDate(booking.start)}
-                                                </p>
-                                            </div>
-                                            <div className="ml-auto flex gap-2">
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="h-8"
-                                                    disabled={processing}
-                                                    onClick={() =>
-                                                        handleStatusUpdate(
-                                                            booking.id,
-                                                            'rejected',
-                                                        )
-                                                    }
-                                                >
-                                                    Reject
-                                                </Button>
-                                                <Button
-                                                    size="sm"
-                                                    className="h-8"
-                                                    disabled={processing}
-                                                    onClick={() =>
-                                                        handleStatusUpdate(
-                                                            booking.id,
-                                                            'confirmed',
-                                                        )
-                                                    }
-                                                >
-                                                    Approve
-                                                </Button>
                                             </div>
                                         </div>
                                     ))
