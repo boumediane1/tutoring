@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(EnsureUserHasRole::class.':student')->group(function () {
         Route::get('student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+        Route::get('student/tutors', [\App\Http\Controllers\Student\TutorController::class, 'index'])->name('student.tutors.index');
     });
 });
 

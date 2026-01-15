@@ -17,15 +17,19 @@ import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 const Combobox = ({
-    data,
+    data = [],
     placeholder,
     value,
     setValue,
+    disabled,
 }: {
-    data: { value: string; label: string }[];
+    data?: { value: string; label: string }[];
     placeholder: string;
     value: string;
     setValue: Dispatch<SetStateAction<string>>;
+    label?: string;
+    name?: string;
+    disabled?: boolean;
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -37,6 +41,7 @@ const Combobox = ({
                     role="combobox"
                     aria-expanded={open}
                     className="w-full justify-between"
+                    disabled={disabled}
                 >
                     {value
                         ? data.find((item) => item.value === value)?.label

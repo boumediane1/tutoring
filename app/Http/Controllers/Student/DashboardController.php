@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Models\Speciality;
 use App\Models\Tutor;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,24 +11,39 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $tutors = Tutor::query()
-            ->with(['user', 'country', 'specialities', 'tags'])
-            ->when($request->input('speciality'), function (Builder $query, string $speciality) {
-                $query->whereRelation('specialities', 'title', $speciality);
-            })
-            ->when($request->input('tag'), function (Builder $query, string $tag) {
-                $query->whereRelation('tags', 'title', $tag);
-            })
-            ->when($request->input('tutor'), function (Builder $query, string $user) {
-                $query->whereRelation('user', 'name', 'like', "%{$user}%");
-            })
+        $student = $request->user()->student;
+
+        $upcomingBookingsQuery = $student->bookings()
+            ->with('tutor.user')
+            ->where('status', 'confirmed')
+            ->where('start', '>=', now())
+            ->orderBy('start');
+
+        $upcomingBookingsCount = $upcomingBookingsQuery->count();
+        $upcomingBookings = $upcomingBookingsQuery->limit(5)->get();
+
+        $recentTutors = Tutor::query()
+            ->whereIn('id', $student->bookings()->select('tutor_id')->distinct())
+            ->with(['user', 'country', 'specialities'])
+            ->limit(3)
             ->get();
 
-        $specialities = Speciality::with('tags')->get();
+        $stats = [
+            'upcoming_lessons' => $upcomingBookingsCount,
+            'pending_requests' => $student->bookings()->where('status', 'pending')->count(),
+            'total_completed' => $student->bookings()
+                ->where('status', 'confirmed')
+                ->where('end', '<', now())
+                ->count(),
+        ];
 
         return Inertia::render('student/dashboard', [
-            'tutors' => $tutors,
-            'specialities' => $specialities,
+            'upcomingBookings' => Inertia::defer(fn () => $upcomingBookings),
+            'recentTutors' => Inertia::defer(fn () => $recentTutors),
+            'stats' => $stats,
+            'counts' => [
+                'upcoming' => $upcomingBookingsCount,
+            ],
         ]);
     }
 }

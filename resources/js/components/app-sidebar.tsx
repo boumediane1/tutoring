@@ -13,10 +13,11 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard as studentDashboard } from '@/routes/student';
+import { index as findTutors } from '@/routes/student/tutors';
 import { dashboard as tutorDashboard } from '@/routes/tutor';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, UserCircle } from 'lucide-react';
+import { BookOpen, LayoutGrid, Search, UserCircle } from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -32,6 +33,14 @@ export function AppSidebar() {
             icon: LayoutGrid,
         },
     ];
+
+    if (auth.user.role === 'student') {
+        mainNavItems.push({
+            title: 'Find a Tutor',
+            href: findTutors(),
+            icon: Search,
+        });
+    }
 
     if (auth.user.role === 'tutor') {
         mainNavItems.push({
