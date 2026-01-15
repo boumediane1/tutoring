@@ -1,0 +1,62 @@
+services:
+  php:
+    # image: oboumediane/tutoring-app-php:latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: tutoring-php
+    restart: unless-stopped
+    environment:
+      - APP_KEY=${APP_KEY}
+      - APP_ENV=production
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=tutoring
+      - DB_USERNAME=tutoring
+      - DB_PASSWORD=tutoring
+    depends_on:
+      - postgres
+    networks:
+      - tutoring
+
+  nginx:
+    # image: oboumediane/tutoring-app-nginx:latest
+
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+
+    container_name: tutoring-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    depends_on:
+      - php
+    networks:
+      - tutoring
+
+  postgres:
+    image: postgres:18
+    container_name: tutoring-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=tutoring
+      - POSTGRES_USER=tutoring
+      - POSTGRES_PASSWORD=tutoring
+    ports:
+      - "6543:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    networks:
+      - tutoring
+
+networks:
+  tutoring:
+    driver: bridge
+
+volumes:
+  postgres-data:

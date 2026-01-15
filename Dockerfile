@@ -11,7 +11,30 @@ RUN composer install \
 
 # Stage 2: Frontend Assets
 FROM node:22-alpine AS frontend
+
+# Install PHP for Wayfinder
+RUN apk add --no-cache \
+    php \
+    php-ctype \
+    php-curl \
+    php-dom \
+    php-fileinfo \
+    php-mbstring \
+    php-openssl \
+    php-phar \
+    php-session \
+    php-tokenizer \
+    php-xml \
+    php-xmlwriter \
+    php-pdo \
+    php-pdo_pgsql \
+    php-bcmath \
+    php-gd \
+    php-zip \
+    php-intl
+
 WORKDIR /app
+COPY --from=vendor /app/vendor ./vendor
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
