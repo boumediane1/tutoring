@@ -48,6 +48,3 @@ jobs:
 
       - name: Tests
         run: ./vendor/bin/pest
-
-      - name: jacoco-badge-generator
-        uses: cicirello/jacoco-badge-generator@v2.12.1
