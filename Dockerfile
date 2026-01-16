@@ -7,12 +7,12 @@ RUN composer install \
     --no-plugins \
     --no-scripts \
     --no-dev \
-    --prefer-dist
+    --prefer-dist \
+    --optimize-autoloader
 
 # Stage 2: Frontend Assets
 FROM node:22-alpine AS frontend
 
-# Install PHP for Wayfinder
 RUN apk add --no-cache \
     php \
     php-ctype \
@@ -36,42 +36,51 @@ RUN apk add --no-cache \
 WORKDIR /app
 COPY --from=vendor /app/vendor ./vendor
 COPY package.json package-lock.json ./
-RUN npm install
+#RUN npm ci --omit=dev
+RUN npm ci
 COPY . .
 RUN npm run build
 
 # Stage 3: Final Image
 FROM php:8.4-fpm-alpine
 
-# Install system dependencies and PHP extensions
+# Install runtime libraries and build PHP extensions
 RUN apk add --no-cache \
-    postgresql-dev \
-    libpng-dev \
-    libzip-dev \
-    icu-dev \
-    zip \
-    unzip \
-    && docker-php-ext-install pdo pdo_pgsql bcmath gd zip opcache intl
+        postgresql-libs \
+        libpng \
+        libzip \
+        icu-libs \
+    && apk add --no-cache --virtual .build-deps \
+        postgresql-dev \
+        libpng-dev \
+        libzip-dev \
+        icu-dev \
+    && docker-php-ext-install pdo pdo_pgsql bcmath gd zip opcache intl \
+    && apk del .build-deps \
+    && rm -rf /var/cache/apk/*
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy application code
-COPY . .
+# Copy only necessary application files
+COPY --chown=www-data:www-data app ./app
+COPY --chown=www-data:www-data bootstrap ./bootstrap
+COPY --chown=www-data:www-data config ./config
+COPY --chown=www-data:www-data database ./database
+COPY --chown=www-data:www-data public ./public
+COPY --chown=www-data:www-data resources ./resources
+COPY --chown=www-data:www-data routes ./routes
+COPY --chown=www-data:www-data storage ./storage
+COPY --chown=www-data:www-data artisan ./artisan
+COPY --chown=www-data:www-data composer.json ./composer.json
 
 # Copy dependencies from previous stages
-COPY --from=vendor /app/vendor ./vendor
-COPY --from=frontend /app/public/build ./public/build
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+COPY --from=vendor --chown=www-data:www-data /app/vendor ./vendor
+COPY --from=frontend --chown=www-data:www-data /app/public/build ./public/build
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
-
 EXPOSE 9000
-
 CMD ["php-fpm"]
