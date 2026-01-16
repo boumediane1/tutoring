@@ -13,7 +13,8 @@ class Language extends Model
 
     public $timestamps = false;
 
-    public function tutors(): BelongsToMany {
+    public function tutors(): BelongsToMany
+    {
         return $this->belongsToMany(Tutor::class);
     }
 }

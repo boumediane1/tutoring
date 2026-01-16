@@ -7,9 +7,9 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export default function Register() {
     return (
@@ -109,9 +109,7 @@ export default function Register() {
                                         <Label htmlFor="tutor">Tutor</Label>
                                     </div>
                                 </RadioGroup>
-                                <InputError
-                                    message={errors.role}
-                                />
+                                <InputError message={errors.role} />
                             </div>
 
                             <Button

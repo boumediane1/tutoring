@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Speciality;
 use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TagSeeder extends Seeder
@@ -110,7 +109,7 @@ class TagSeeder extends Seeder
 
         foreach ($tagsBySpeciality as $key => $value) {
             $tags = collect($value)
-                ->map(fn($tag) => ['title' => $tag, 'speciality_id' => $specialities[$key]])
+                ->map(fn ($tag) => ['title' => $tag, 'speciality_id' => $specialities[$key]])
                 ->toArray();
 
             Tag::query()->insert($tags);

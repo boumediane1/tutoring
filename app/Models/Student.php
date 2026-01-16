@@ -19,7 +19,8 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function bookings(): HasMany {
+    public function bookings(): HasMany
+    {
         return $this->hasMany(Booking::class);
     }
 }
