@@ -1,5 +1,4 @@
 import { update } from '@/actions/App/Http/Controllers/Tutor/BookingController';
-import Heading from '@/components/heading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -90,11 +89,16 @@ export default function Dashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Tutor Dashboard" />
 
-            <div className="px-4 py-6">
-                <Heading
-                    title="Dashboard"
-                    description="Overview of your tutoring sessions and requests."
-                />
+            <div className="space-y-8 p-4 md:p-8">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Dashboard
+                    </h1>
+                    <p className="text-muted-foreground">
+                        Welcome back! Here's what's happening with your
+                        tutoring.
+                    </p>
+                </div>
 
                 <div className="space-y-6">
                     <div className="grid gap-4 md:grid-cols-3">
@@ -103,12 +107,15 @@ export default function Dashboard({
                                 <CardTitle className="text-sm font-medium">
                                     Total Sessions
                                 </CardTitle>
-                                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                                <CheckCircle className="h-4 w-4 text-green-500" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
                                     {stats.total_sessions}
                                 </div>
+                                <p className="text-xs text-muted-foreground">
+                                    Total tutoring sessions
+                                </p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -116,12 +123,15 @@ export default function Dashboard({
                                 <CardTitle className="text-sm font-medium">
                                     Pending Requests
                                 </CardTitle>
-                                <Clock className="h-4 w-4 text-muted-foreground" />
+                                <Clock className="h-4 w-4 text-yellow-500" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
                                     {stats.pending_requests}
                                 </div>
+                                <p className="text-xs text-muted-foreground">
+                                    Requests awaiting your approval
+                                </p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -129,12 +139,15 @@ export default function Dashboard({
                                 <CardTitle className="text-sm font-medium">
                                     Upcoming Sessions
                                 </CardTitle>
-                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                                <Calendar className="h-4 w-4 text-blue-500" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
                                     {stats.upcoming_sessions}
                                 </div>
+                                <p className="text-xs text-muted-foreground">
+                                    Sessions scheduled soon
+                                </p>
                             </CardContent>
                         </Card>
                     </div>
@@ -161,21 +174,21 @@ export default function Dashboard({
                                                 key={booking.id}
                                                 className="flex items-center"
                                             >
-                                                <Avatar className="h-9 w-9">
+                                                <Avatar className="h-10 w-10 border border-border">
                                                     <AvatarFallback>
                                                         {booking.student.user.name.charAt(
                                                             0,
                                                         )}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <div className="ml-4 space-y-1">
-                                                    <p className="text-sm leading-none font-medium">
+                                                <div className="ml-4 flex-1 space-y-1">
+                                                    <p className="text-sm leading-none font-semibold">
                                                         {
                                                             booking.student.user
                                                                 .name
                                                         }
                                                     </p>
-                                                    <p className="text-sm text-muted-foreground">
+                                                    <p className="text-xs text-muted-foreground">
                                                         {formatDate(
                                                             booking.start,
                                                         )}
@@ -214,8 +227,8 @@ export default function Dashboard({
                                                 key={booking.id}
                                                 className="flex items-center justify-between"
                                             >
-                                                <div className="flex items-center">
-                                                    <Avatar className="h-9 w-9">
+                                                <div className="flex flex-1 items-center">
+                                                    <Avatar className="h-10 w-10 border border-border">
                                                         <AvatarFallback>
                                                             {booking.student.user.name.charAt(
                                                                 0,
@@ -223,13 +236,13 @@ export default function Dashboard({
                                                         </AvatarFallback>
                                                     </Avatar>
                                                     <div className="ml-4 space-y-1">
-                                                        <p className="text-sm leading-none font-medium">
+                                                        <p className="text-sm leading-none font-semibold">
                                                             {
                                                                 booking.student
                                                                     .user.name
                                                             }
                                                         </p>
-                                                        <p className="text-sm text-muted-foreground">
+                                                        <p className="text-xs text-muted-foreground">
                                                             {formatDate(
                                                                 booking.start,
                                                             )}

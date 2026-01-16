@@ -161,6 +161,7 @@ export default function Dashboard({
                                         >
                                             <Avatar className="h-10 w-10 border border-border">
                                                 <AvatarImage
+                                                    className="object-cover"
                                                     src={
                                                         booking.tutor.user.image
                                                     }
