@@ -8,9 +8,10 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import booking from '@/routes/booking';
 import { dashboard } from '@/routes/student';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, Clock, Users } from 'lucide-react';
 import '/node_modules/flag-icons/css/flag-icons.min.css';
 
@@ -257,8 +258,15 @@ export default function Dashboard({
                                             <Button
                                                 size="sm"
                                                 className="cursor-pointer"
+                                                asChild
                                             >
-                                                Book
+                                                <Link
+                                                    href={booking.index.url(
+                                                        tutor.id,
+                                                    )}
+                                                >
+                                                    Book
+                                                </Link>
                                             </Button>
                                         </div>
                                     ))

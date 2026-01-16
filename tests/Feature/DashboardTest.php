@@ -10,9 +10,16 @@ test('guests are redirected to the login page', function () {
 
 test('authenticated students can visit the dashboard', function () {
     $user = User::factory()->create(['role' => 'student']);
-    Student::factory()->create(['user_id' => $user->id]);
+    $student = Student::factory()->create(['user_id' => $user->id]);
 
     $this->actingAs($user);
+    $tutor = Tutor::factory()->create();
+    $student->bookings()->create([
+        'tutor_id' => $tutor->id,
+        'start' => now()->addDay(),
+        'end' => now()->addDay()->addHour(),
+        'status' => 'confirmed',
+    ]);
 
     $this->get(route('student.dashboard'))
         ->assertOk()
@@ -20,6 +27,7 @@ test('authenticated students can visit the dashboard', function () {
             ->component('student/dashboard')
             ->has('stats')
             ->has('counts')
+            ->has('recentTutors', 1)
         );
 });
 
