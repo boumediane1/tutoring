@@ -55,6 +55,7 @@ export default function Dashboard({
     upcomingBookings,
     counts,
 }: Props) {
+    console.log('test');
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             weekday: 'short',
