@@ -97,14 +97,10 @@ export default function TutorsIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Find a Tutor" />
             <div className="space-y-8 p-4 md:p-8">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Find a Tutor
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Search and filter tutors by speciality and name.
-                    </p>
-                </div>
+                <Heading
+                    title="Find a Tutor"
+                    description="Search and filter tutors by speciality and name."
+                />
 
                 <div className="grid gap-6">
                     <Card>

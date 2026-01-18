@@ -7,9 +7,9 @@ export default function Heading({
 }) {
     return (
         <div className="mb-8 space-y-0.5">
-            <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+            <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
             {description && (
-                <p className="text-sm text-muted-foreground">{description}</p>
+                <p className="text-muted-foreground">{description}</p>
             )}
         </div>
     );

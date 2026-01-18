@@ -74,7 +74,7 @@ const Details = ({ tutor, countries, languages, specialities }: Props) => {
         <AppLayout>
             <Head title="Profile Details" />
 
-            <div className="px-4 py-6">
+            <div className="p-4 md:p-8">
                 <Heading
                     title="Profile Details"
                     description="Update your tutor profile information."

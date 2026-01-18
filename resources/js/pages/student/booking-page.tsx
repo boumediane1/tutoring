@@ -1,4 +1,5 @@
 import { store } from '@/actions/App/Http/Controllers/BookingController';
+import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,12 +102,11 @@ export default function BookingPage({ tutor, bookings }: BookingPageProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Book with ${tutor.name}`} />
-            <div className="p-4">
-                <div className="mb-4">
-                    <h1 className="text-2xl font-bold">
-                        Book a session with {tutor.name}
-                    </h1>
-                </div>
+            <div className="p-4 md:p-8">
+                <Heading
+                    title={`Book a session with ${tutor.name}`}
+                    description={`Select a time slot to book your session with ${tutor.name}.`}
+                />
 
                 <FullCalendar
                     plugins={[timeGridPlugin, interactionPlugin]}

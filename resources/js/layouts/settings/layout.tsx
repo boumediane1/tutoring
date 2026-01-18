@@ -42,7 +42,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="px-4 py-6">
+        <div className="p-4 md:p-8">
             <Heading
                 title="Settings"
                 description="Manage your profile and account settings"

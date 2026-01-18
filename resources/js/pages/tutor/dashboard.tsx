@@ -1,4 +1,5 @@
 import { update } from '@/actions/App/Http/Controllers/Tutor/BookingController';
+import Heading from '@/components/heading';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -105,15 +106,10 @@ export default function Dashboard({
             <Head title="Tutor Dashboard" />
 
             <div className="space-y-8 p-4 md:p-8">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Dashboard
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Welcome back! Here's what's happening with your
-                        tutoring.
-                    </p>
-                </div>
+                <Heading
+                    title="Dashboard"
+                    description="Welcome back! Here's what's happening with your tutoring."
+                />
 
                 <div className="grid gap-4 md:grid-cols-3">
                     <Card>

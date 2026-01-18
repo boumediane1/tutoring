@@ -1,4 +1,5 @@
 import { join } from '@/actions/App/Http/Controllers/BookingJoinController';
+import Heading from '@/components/heading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -89,15 +90,10 @@ export default function Dashboard({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Student Dashboard" />
             <div className="space-y-8 p-4 md:p-8">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        Dashboard
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Welcome back! Here's what's happening with your
-                        learning.
-                    </p>
-                </div>
+                <Heading
+                    title="Dashboard"
+                    description="Welcome back! Here's what's happening with your learning."
+                />
 
                 <div className="grid gap-4 md:grid-cols-3">
                     <Card>

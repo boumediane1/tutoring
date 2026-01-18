@@ -92,7 +92,7 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My Bookings" />
 
-            <div className="px-4 py-6">
+            <div className="p-4 md:p-8">
                 <Heading
                     title="My Bookings"
                     description="Overview of your bookings."
