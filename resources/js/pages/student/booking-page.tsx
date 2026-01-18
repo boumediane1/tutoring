@@ -118,13 +118,10 @@ export default function BookingPage({ tutor, bookings }: BookingPageProps) {
                     events={bookings}
                     select={handleDateSelect}
                     timeZone="UTC"
-                    slotMinTime="08:00:00"
-                    slotMaxTime="20:00:00"
                     slotDuration="01:00:00"
                     snapDuration="01:00:00"
                     defaultTimedEventDuration="01:00:00"
                     allDaySlot={false}
-                    height="700px"
                     expandRows={true}
                 />
 

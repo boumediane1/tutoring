@@ -107,11 +107,8 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
                     events={bookings}
                     eventClick={handleEventClick}
                     eventClassNames="cursor-pointer"
-                    slotMinTime="08:00:00"
-                    slotMaxTime="20:00:00"
                     slotDuration="01:00:00"
                     allDaySlot={false}
-                    height="700px"
                     expandRows={true}
                 />
 
