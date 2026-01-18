@@ -1,10 +1,23 @@
 import { store } from '@/actions/App/Http/Controllers/BookingController';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { Head, router } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface Booking {
     id: string;
@@ -23,6 +36,14 @@ interface BookingPageProps {
 }
 
 export default function BookingPage({ tutor, bookings }: BookingPageProps) {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const { data, setData, post, processing, errors, reset, clearErrors } =
+        useForm({
+            tutor_id: tutor.id,
+            start: '',
+            end: '',
+        });
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Dashboard',
@@ -40,25 +61,41 @@ export default function BookingPage({ tutor, bookings }: BookingPageProps) {
         endStr: string;
         view: { calendar: { unselect: () => void } };
     }) => {
+        // use selectInfo.start (which is a Date object) for comparison
+        // But FullCalendar in UTC mode gives start as if it were local time
+        // actually when timeZone="UTC", selectInfo.start is the UTC date
         if (selectInfo.start < new Date()) {
             alert('You cannot book a session in the past.');
             selectInfo.view.calendar.unselect();
             return;
         }
 
-        const title = confirm(
-            `Do you want to book a session from ${selectInfo.startStr} to ${selectInfo.endStr}?`,
-        );
+        // selectInfo.startStr and endStr are in ISO format (e.g., 2026-01-18T18:00:00Z or similar)
+        // Since we are using timeZone="UTC", these will be UTC strings.
+        // We want to extract the date and time for our datetime-local input, which expects YYYY-MM-DDTHH:mm
+        const formatForInput = (dateStr: string) => {
+            return dateStr.substring(0, 16);
+        };
 
-        if (title) {
-            router.post(store(), {
-                tutor_id: tutor.id,
-                start: selectInfo.startStr,
-                end: selectInfo.endStr,
-            });
-        }
+        setData({
+            ...data,
+            start: formatForInput(selectInfo.startStr),
+            end: formatForInput(selectInfo.endStr),
+        });
+        setIsDialogOpen(true);
 
         selectInfo.view.calendar.unselect();
+    };
+
+    const handleBookingSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        post(store().url, {
+            onSuccess: () => {
+                setIsDialogOpen(false);
+                reset();
+            },
+        });
     };
 
     return (
@@ -80,6 +117,7 @@ export default function BookingPage({ tutor, bookings }: BookingPageProps) {
                     weekends={true}
                     events={bookings}
                     select={handleDateSelect}
+                    timeZone="UTC"
                     slotMinTime="08:00:00"
                     slotMaxTime="20:00:00"
                     slotDuration="01:00:00"
@@ -89,6 +127,71 @@ export default function BookingPage({ tutor, bookings }: BookingPageProps) {
                     height="700px"
                     expandRows={true}
                 />
+
+                <Dialog
+                    open={isDialogOpen}
+                    onOpenChange={(open) => {
+                        setIsDialogOpen(open);
+                        if (!open) {
+                            clearErrors();
+                        }
+                    }}
+                >
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Confirm Booking</DialogTitle>
+                            <DialogDescription>
+                                Set your preferred time for the session with{' '}
+                                {tutor.name}.
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <form
+                            onSubmit={handleBookingSubmit}
+                            className="space-y-4 py-4"
+                        >
+                            <div className="grid gap-2">
+                                <Label htmlFor="start">Start Time</Label>
+                                <Input
+                                    id="start"
+                                    type="datetime-local"
+                                    value={data.start}
+                                    onChange={(e) =>
+                                        setData('start', e.target.value)
+                                    }
+                                    required
+                                />
+                                <InputError message={errors.start} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="end">End Time</Label>
+                                <Input
+                                    id="end"
+                                    type="datetime-local"
+                                    value={data.end}
+                                    onChange={(e) =>
+                                        setData('end', e.target.value)
+                                    }
+                                    required
+                                />
+                                <InputError message={errors.end} />
+                            </div>
+
+                            <DialogFooter>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setIsDialogOpen(false)}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={processing}>
+                                    Book Session
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
         </AppLayout>
     );

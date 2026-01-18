@@ -31,9 +31,9 @@ class StoreBookingRequest extends FormRequest
                 'required',
                 'date',
                 'after:now',
-                new AvailableRoom,
                 new StartOfHour,
                 new FullHourDuration,
+                new AvailableRoom,
             ],
             'end' => 'required|date|after:start',
         ];

@@ -35,25 +35,28 @@ it('student cannot book unavailable time slot', function () {
     $tutor = Tutor::factory()->for(User::factory())->create();
     $student = Student::factory()->for($user)->create();
 
+    $start = now()->addDays(2)->startOfHour();
+    $end = (clone $start)->addHours(2);
+
     Booking::query()->create([
         'tutor_id' => $tutor->id,
         'student_id' => $student->id,
-        'start' => now()->addDays(2)->startOfHour()->toIso8601String(),
-        'end' => now()->addDays(2)->startOfHour()->addHours(2)->toIso8601String(),
+        'start' => $start->toDateTimeString(),
+        'end' => $end->toDateTimeString(),
         'status' => 'confirmed',
     ]);
 
     $this->post('/bookings', [
         'tutor_id' => $tutor->id,
-        'start' => now()->addDays(2)->startOfHour()->toIso8601String(),
-        'end' => now()->addDays(2)->startOfHour()->addHours(2)->toIso8601String(),
-    ]);
+        'start' => $start->toDateTimeString(),
+        'end' => $end->toDateTimeString(),
+    ])->assertSessionHasErrors();
 
     $this->post('/bookings', [
         'tutor_id' => $tutor->id,
         'start' => now()->addDays(2)->startOfHour()->addMinutes(30)->toIso8601String(),
         'end' => now()->addDays(2)->startOfHour()->addHours(1)->addMinutes(30)->toIso8601String(),
-    ]);
+    ])->assertSessionHasErrors();
 
     $this->assertDatabaseCount('bookings', 1);
 });

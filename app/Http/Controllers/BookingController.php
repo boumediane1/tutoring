@@ -30,8 +30,8 @@ class BookingController extends Controller
                 return [
                     'id' => (string) $booking->id,
                     'title' => $isOwnBooking ? ucfirst($booking->status) : 'Unavailable',
-                    'start' => $booking->start,
-                    'end' => $booking->end,
+                    'start' => $booking->start->toIso8601String(),
+                    'end' => $booking->end->toIso8601String(),
                     'color' => $isOwnBooking ? match ($booking->status) {
                         'confirmed' => '#10b981',
                         'pending' => '#f59e0b',
