@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $upcomingBookingsQuery = $tutor->bookings()
             ->with('student.user')
             ->where('status', 'confirmed')
-            ->where('start', '>=', now())
+            ->where('end', '>=', now())
             ->orderBy('start');
 
         $upcomingBookingsCount = $upcomingBookingsQuery->count();

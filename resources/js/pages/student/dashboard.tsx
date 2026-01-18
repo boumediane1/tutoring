@@ -1,3 +1,4 @@
+import { join } from '@/actions/App/Http/Controllers/BookingJoinController';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,11 +9,12 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import booking from '@/routes/booking';
+import { index as bookTutor } from '@/routes/booking';
 import { dashboard } from '@/routes/student';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, Clock, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import '/node_modules/flag-icons/css/flag-icons.min.css';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -44,6 +46,7 @@ interface Tutor {
 interface Booking {
     id: number;
     start: string;
+    end: string;
     tutor: {
         user: {
             name: string;
@@ -69,6 +72,19 @@ export default function Dashboard({
         upcoming: number;
     };
 }) {
+    const [now, setNow] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => setNow(new Date()), 10000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const canJoin = (booking: Booking) => {
+        const start = new Date(booking.start);
+        const end = new Date(booking.end);
+        return now >= start && now <= end;
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Student Dashboard" />
@@ -195,9 +211,32 @@ export default function Dashboard({
                                                     )}
                                                 </p>
                                             </div>
-                                            <Button variant="outline" size="sm">
-                                                Details
-                                            </Button>
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    Details
+                                                </Button>
+                                                <Button
+                                                    size="sm"
+                                                    disabled={!canJoin(booking)}
+                                                    asChild={canJoin(booking)}
+                                                >
+                                                    {canJoin(booking) ? (
+                                                        <a
+                                                            href={
+                                                                join(booking.id)
+                                                                    .url
+                                                            }
+                                                        >
+                                                            Join session
+                                                        </a>
+                                                    ) : (
+                                                        'Join session'
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </div>
                                     ))
                                 )}
@@ -261,7 +300,7 @@ export default function Dashboard({
                                                 asChild
                                             >
                                                 <Link
-                                                    href={booking.index.url(
+                                                    href={bookTutor.url(
                                                         tutor.id,
                                                     )}
                                                 >

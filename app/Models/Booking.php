@@ -19,11 +19,27 @@ class Booking extends Model
         'student_id',
         'status',
         'name',
+        'bbb_meeting_id',
+        'bbb_attendee_password',
+        'bbb_moderator_password',
     ];
 
     protected $casts = [
         'status' => 'string',
+        'start' => 'datetime',
+        'end' => 'datetime',
     ];
+
+    public function canJoin(): bool
+    {
+        if ($this->status !== 'confirmed') {
+            return false;
+        }
+
+        $now = now();
+
+        return $now->between($this->start, $this->end);
+    }
 
     public function tutor(): BelongsTo
     {

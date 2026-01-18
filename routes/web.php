@@ -42,6 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('profile/details', [ProfileDetailsController::class, 'edit'])->name('profile.details.edit');
     Route::put('profile/details', [ProfileDetailsController::class, 'update'])->name('profile.details.update');
 
+    Route::get('bookings/{booking}/join', [\App\Http\Controllers\BookingJoinController::class, 'join'])->name('bookings.join');
+
     Route::middleware(EnsureUserHasRole::class.':student')->group(function () {
         Route::get('student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
         Route::get('student/tutors', [\App\Http\Controllers\Student\TutorController::class, 'index'])->name('student.tutors.index');
