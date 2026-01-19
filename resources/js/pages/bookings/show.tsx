@@ -28,7 +28,7 @@ import {
     Trash2,
     Upload,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface SessionDocument {
     id: number;
@@ -63,14 +63,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Show({ booking }: { booking: Booking }) {
     const { auth } = usePage<SharedData>().props;
     const [now, setNow] = useState(new Date());
+    const fileInput = useRef<HTMLInputElement>(null);
 
     const {
-        data,
-        setData,
         post,
         processing,
         reset,
         errors,
+        transform,
         delete: destroy,
     } = useForm({
         document: null as File | null,
@@ -114,11 +114,26 @@ export default function Show({ booking }: { booking: Booking }) {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
-    const handleUpload = (e: React.FormEvent) => {
-        e.preventDefault();
-        post(uploadDocument(booking.id).url, {
-            onSuccess: () => reset(),
-        });
+    const handleUpload = (file: File) => {
+        if (confirm(`Are you sure you want to upload "${file.name}"?`)) {
+            transform((data) => ({
+                ...data,
+                document: file,
+            }));
+
+            post(uploadDocument(booking.id).url, {
+                onSuccess: () => {
+                    reset();
+                    if (fileInput.current) {
+                        fileInput.current.value = '';
+                    }
+                },
+            });
+        } else {
+            if (fileInput.current) {
+                fileInput.current.value = '';
+            }
+        }
     };
 
     const handleDeleteDocument = (documentId: number) => {
@@ -255,26 +270,27 @@ export default function Show({ booking }: { booking: Booking }) {
                                     </CardDescription>
                                 </div>
                                 {isTutor && (
-                                    <form
-                                        onSubmit={handleUpload}
-                                        className="flex items-center gap-2"
-                                    >
+                                    <div className="flex items-center gap-2">
                                         <Input
                                             type="file"
-                                            className="w-auto"
-                                            onChange={(e) =>
-                                                setData(
-                                                    'document',
-                                                    e.target.files?.[0] || null,
-                                                )
-                                            }
+                                            ref={fileInput}
+                                            className="hidden"
+                                            onChange={(e) => {
+                                                const file =
+                                                    e.target.files?.[0];
+                                                if (file) {
+                                                    handleUpload(file);
+                                                }
+                                            }}
                                         />
                                         <Button
-                                            type="submit"
-                                            disabled={
-                                                processing || !data.document
+                                            type="button"
+                                            onClick={() =>
+                                                fileInput.current?.click()
                                             }
+                                            disabled={processing}
                                             size="sm"
+                                            variant="outline"
                                         >
                                             {processing ? (
                                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -285,7 +301,7 @@ export default function Show({ booking }: { booking: Booking }) {
                                                 </>
                                             )}
                                         </Button>
-                                    </form>
+                                    </div>
                                 )}
                             </CardHeader>
                             <CardContent className="flex flex-1 flex-col">

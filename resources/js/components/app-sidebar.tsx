@@ -1,4 +1,5 @@
 import { edit as profileDetails } from '@/actions/App/Http/Controllers/ProfileDetailsController';
+import { index as sessionList } from '@/actions/App/Http/Controllers/SessionController';
 import { index as tutorBookings } from '@/actions/App/Http/Controllers/Tutor/BookingController';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -17,7 +18,13 @@ import { index as findTutors } from '@/routes/student/tutors';
 import { dashboard as tutorDashboard } from '@/routes/tutor';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Search, UserCircle } from 'lucide-react';
+import {
+    BookOpen,
+    FileText,
+    LayoutGrid,
+    Search,
+    UserCircle,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -31,6 +38,11 @@ export function AppSidebar() {
             title: 'Dashboard',
             href: dashboardUrl,
             icon: LayoutGrid,
+        },
+        {
+            title: 'Session Notes',
+            href: sessionList(),
+            icon: FileText,
         },
     ];
 

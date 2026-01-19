@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('profile/details', [ProfileDetailsController::class, 'update'])->name('profile.details.update');
 
     Route::get('bookings/show/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::get('sessions', [\App\Http\Controllers\SessionController::class, 'index'])->name('sessions.index');
     Route::get('bookings/{booking}/join', [\App\Http\Controllers\BookingJoinController::class, 'join'])->name('bookings.join');
 
     Route::post('bookings/{booking}/documents', [SessionDocumentController::class, 'store'])->name('bookings.documents.store');
