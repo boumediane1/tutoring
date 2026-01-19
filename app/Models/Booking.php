@@ -51,6 +51,11 @@ class Booking extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
     public function documents()
     {
         return $this->hasMany(SessionDocument::class);

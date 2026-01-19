@@ -16,6 +16,7 @@ class Tutor extends Model
         'user_id',
         'bio',
         'country_id',
+        'hourly_rate',
     ];
 
     public function user(): BelongsTo

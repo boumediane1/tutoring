@@ -1,3 +1,4 @@
+import { index as billingList } from '@/actions/App/Http/Controllers/BillingController';
 import { edit as profileDetails } from '@/actions/App/Http/Controllers/ProfileDetailsController';
 import { index as sessionList } from '@/actions/App/Http/Controllers/SessionController';
 import { index as tutorBookings } from '@/actions/App/Http/Controllers/Tutor/BookingController';
@@ -20,6 +21,7 @@ import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
+    CreditCard,
     FileText,
     LayoutGrid,
     Search,
@@ -43,6 +45,11 @@ export function AppSidebar() {
             title: 'Session Notes',
             href: sessionList(),
             icon: FileText,
+        },
+        {
+            title: 'Billings',
+            href: billingList(),
+            icon: CreditCard,
         },
     ];
 

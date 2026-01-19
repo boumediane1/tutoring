@@ -177,7 +177,7 @@ export default function TutorsIndex({
                                     }
                                 />
                                 <Button
-                                    variant="secondary"
+                                    variant="outline"
                                     type="button"
                                     onClick={reset}
                                 >

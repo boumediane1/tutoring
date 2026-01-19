@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookingRequest;
 use App\Models\Booking;
+use App\Models\Invoice;
 use App\Models\Tutor;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -79,15 +81,31 @@ class BookingController extends Controller
     public function store(StoreBookingRequest $request)
     {
         $student = $request->user()->student;
+        $tutorId = $request->input('tutor_id');
+        $start = Carbon::parse($request->input('start'));
+        $end = Carbon::parse($request->input('end'));
 
         $booking = new Booking([
             'student_id' => $student->id,
-            'tutor_id' => $request->input('tutor_id'),
-            'start' => $request->input('start'),
-            'end' => $request->input('end'),
+            'tutor_id' => $tutorId,
+            'start' => $start,
+            'end' => $end,
         ]);
 
         $booking->save();
+
+        // Calculate invoice amount
+        $tutor = Tutor::find($tutorId);
+        $durationInHours = $start->diffInMinutes($end) / 60;
+        $amount = $tutor->hourly_rate * $durationInHours;
+
+        Invoice::create([
+            'booking_id' => $booking->id,
+            'student_id' => $student->id,
+            'tutor_id' => $tutor->id,
+            'amount' => $amount,
+            'status' => 'paid',
+        ]);
 
         return back();
     }
