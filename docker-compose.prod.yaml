@@ -1,10 +1,10 @@
 services:
   php:
-    # image: oboumediane/tutoring-app-php:latest
+    image: oboumediane/tutoring-app-php:latest
 
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
 
     container_name: tutoring-php
     restart: unless-stopped
@@ -24,11 +24,11 @@ services:
       - tutoring
 
   nginx:
-    # image: oboumediane/tutoring-app-nginx:latest
+    image: oboumediane/tutoring-app-nginx:latest
 
-    build:
-      context: .
-      dockerfile: nginx.Dockerfile
+#    build:
+#      context: .
+#      dockerfile: nginx.Dockerfile
 
     container_name: tutoring-nginx
     restart: unless-stopped
