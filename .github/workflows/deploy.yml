@@ -13,4 +13,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           capture_stdout: true
-          script: whoami
+          script: docker compose up -d

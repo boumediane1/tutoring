@@ -22,8 +22,6 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: LoginProps) {
-    console.log('Rendering Login component');
-
     return (
         <AuthLayout
             title="Log in to your account"
