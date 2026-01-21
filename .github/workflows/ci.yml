@@ -13,3 +13,7 @@ jobs:
   lint:
     needs: [tests]
     uses: ./.github/workflows/lint.yml
+
+  sonar:
+    needs: [tests, lint]
+    uses: ./.github/workflows/sonarcloud.yml
