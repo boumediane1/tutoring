@@ -1,0 +1,15 @@
+name: 'CI Orchestrator'
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  lint:
+    needs: [tests]
+    uses: ./.github/workflows/lint.yml
