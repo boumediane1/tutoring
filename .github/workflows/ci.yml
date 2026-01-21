@@ -17,3 +17,4 @@ jobs:
   sonar:
     needs: [tests, lint]
     uses: ./.github/workflows/sonarcloud.yml
+    secrets: inherit
