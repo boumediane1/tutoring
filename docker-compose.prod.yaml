@@ -50,14 +50,32 @@ services:
     networks:
       - tutoring
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    networks:
+      - tutoring
+
   grafana:
-    image: grafana/grafana-enterprise
+    image: grafana/grafana:12.3
+
     container_name: grafana
     restart: unless-stopped
     ports:
       - '3000:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
+    networks:
+      - tutoring
+
 
 networks:
   tutoring:
@@ -66,3 +84,4 @@ networks:
 volumes:
   postgres-data:
   grafana-storage:
+  prometheus-data:
