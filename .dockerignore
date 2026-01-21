@@ -10,6 +10,7 @@ storage/framework/testing/*
 storage/framework/views/*.php
 storage/logs/*.log
 public/build
+public/hot
 .env
 .env.example
 .phpunit.result.cache
