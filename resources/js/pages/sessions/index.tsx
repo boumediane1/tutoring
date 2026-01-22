@@ -169,38 +169,33 @@ export default function SessionsIndex({
                                                 </span>
                                             </div>
 
-                                            {/* Right: Time */}
-                                            <div className="flex min-w-[100px] flex-col items-end">
+                                            {/* Right: Time and Rating */}
+                                            <div className="flex min-w-[120px] flex-col items-end">
                                                 <span className="text-lg font-bold text-[#1a1a1a]">
                                                     {formatTime(session.start)}
                                                 </span>
                                                 <span className="text-sm text-gray-500">
                                                     Your time
                                                 </span>
+                                            </div>
+
+                                            <div className="flex min-w-[140px] flex-col items-end">
                                                 {!isTutor && (
-                                                    <div className="mt-2">
-                                                        <StarRating
-                                                            bookingId={
-                                                                session.id
-                                                            }
-                                                            initialRating={
-                                                                session.rating
-                                                            }
-                                                        />
-                                                    </div>
+                                                    <StarRating
+                                                        bookingId={session.id}
+                                                        initialRating={
+                                                            session.rating
+                                                        }
+                                                    />
                                                 )}
-                                                {isTutor && session.rating && (
-                                                    <div className="mt-2">
-                                                        <StarRating
-                                                            bookingId={
-                                                                session.id
-                                                            }
-                                                            initialRating={
-                                                                session.rating
-                                                            }
-                                                            readonly
-                                                        />
-                                                    </div>
+                                                {isTutor && (
+                                                    <StarRating
+                                                        bookingId={session.id}
+                                                        initialRating={
+                                                            session.rating
+                                                        }
+                                                        readonly
+                                                    />
                                                 )}
                                             </div>
                                         </div>
