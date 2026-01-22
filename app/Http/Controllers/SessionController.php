@@ -14,7 +14,7 @@ class SessionController extends Controller
         $user = $request->user();
 
         $query = Booking::query()
-            ->with(['tutor.user', 'student.user'])
+            ->with(['tutor.user', 'student.user', 'review'])
             ->withCount('documents')
             ->where('status', 'confirmed');
 
@@ -43,6 +43,7 @@ class SessionController extends Controller
                         'image' => $session->student->user->image,
                     ],
                     'documents_count' => $session->documents_count,
+                    'rating' => $session->review?->rating,
                 ];
             }),
         ]);

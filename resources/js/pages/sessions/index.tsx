@@ -1,5 +1,6 @@
 import Heading from '@/components/heading';
 import Pagination from '@/components/pagination';
+import StarRating from '@/components/star-rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
@@ -21,6 +22,7 @@ interface Session {
         image?: string;
     };
     documents_count: number;
+    rating?: number;
 }
 
 interface PaginatedSessions {
@@ -95,13 +97,15 @@ export default function SessionsIndex({
                                         ? session.student
                                         : session.tutor;
                                     return (
-                                        <Link
+                                        <div
                                             key={session.id}
-                                            href={`/bookings/show/${session.id}`}
                                             className="group flex items-center gap-4 rounded-lg border bg-white p-4 transition-colors hover:bg-gray-50"
                                         >
                                             {/* Left: Avatar and Participant Info */}
-                                            <div className="flex min-w-0 flex-1 items-center gap-4">
+                                            <Link
+                                                href={`/bookings/show/${session.id}`}
+                                                className="flex min-w-0 flex-1 items-center gap-4"
+                                            >
                                                 <Avatar className="h-12 w-12 border">
                                                     {participant.image && (
                                                         <AvatarImage
@@ -130,14 +134,17 @@ export default function SessionsIndex({
                                                             : 'Tutor'}
                                                     </span>
                                                 </div>
-                                            </div>
+                                            </Link>
 
                                             {/* Middle: Session Name */}
-                                            <div className="flex min-w-0 flex-1 flex-col">
+                                            <Link
+                                                href={`/bookings/show/${session.id}`}
+                                                className="flex min-w-0 flex-1 flex-col"
+                                            >
                                                 <span className="truncate text-lg font-bold text-[#1a1a1a]">
                                                     {session.name}
                                                 </span>
-                                            </div>
+                                            </Link>
 
                                             {/* Session Duration Column */}
                                             <div className="flex min-w-[100px] flex-col items-center">
@@ -170,8 +177,33 @@ export default function SessionsIndex({
                                                 <span className="text-sm text-gray-500">
                                                     Your time
                                                 </span>
+                                                {!isTutor && (
+                                                    <div className="mt-2">
+                                                        <StarRating
+                                                            bookingId={
+                                                                session.id
+                                                            }
+                                                            initialRating={
+                                                                session.rating
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                                {isTutor && session.rating && (
+                                                    <div className="mt-2">
+                                                        <StarRating
+                                                            bookingId={
+                                                                session.id
+                                                            }
+                                                            initialRating={
+                                                                session.rating
+                                                            }
+                                                            readonly
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
-                                        </Link>
+                                        </div>
                                     );
                                 })}
                             </div>
