@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
+
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
@@ -17,4 +20,8 @@ test('new users can register', function () {
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('tutor.dashboard', absolute: false));
+
+    $user = User::where('email', 'test@example.com')->first();
+    expect($user->image)->not->toBeNull()
+        ->and(DatabaseSeeder::IMAGES)->toContain($user->image);
 });

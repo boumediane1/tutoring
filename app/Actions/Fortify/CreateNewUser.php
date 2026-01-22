@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Student;
 use App\Models\Tutor;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -38,6 +39,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => $input['password'],
             'role' => $input['role'],
+            'image' => $input['role'] === 'tutor' ? DatabaseSeeder::IMAGES[array_rand(DatabaseSeeder::IMAGES)] : null,
         ]);
 
         if ($validated['role'] === 'tutor') {
