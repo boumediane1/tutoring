@@ -16,3 +16,11 @@ jobs:
   sonar:
     uses: ./.github/workflows/sonarcloud.yml
     secrets: inherit
+
+  push-docker-image:
+    needs: [tests, lint, sonar]
+    uses: ./.github/workflows/push-docker-image.yml
+
+  deploy:
+    needs: [push-docker-image]
+    uses: ./.github/workflows/deploy.yml
