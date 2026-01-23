@@ -24,3 +24,4 @@ jobs:
   deploy:
     needs: [push-docker-image]
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
