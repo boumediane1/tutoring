@@ -52,43 +52,7 @@ it('student cannot book unavailable time slot', function () {
         'end' => $end->toDateTimeString(),
     ])->assertSessionHasErrors();
 
-    $this->post('/bookings', [
-        'tutor_id' => $tutor->id,
-        'start' => now()->addDays(2)->startOfHour()->addMinutes(30)->toIso8601String(),
-        'end' => now()->addDays(2)->startOfHour()->addHours(1)->addMinutes(30)->toIso8601String(),
-    ])->assertSessionHasErrors();
-
     $this->assertDatabaseCount('bookings', 1);
-});
-
-it('disallows booking half an hour sessions', function () {
-    $user = User::factory()->create(['role' => 'student']);
-    $this->actingAs($user);
-
-    $tutor = Tutor::factory()->for(User::factory())->create();
-
-    $response = $this->post('/bookings', [
-        'tutor_id' => $tutor->id,
-        'start' => now()->addDays(2)->startOfHour()->toIso8601String(),
-        'end' => now()->addDays(2)->startOfHour()->addMinutes(30)->toIso8601String(),
-    ]);
-
-    $response->assertSessionHasErrors(['start' => 'The session must be booked in full hours.']);
-});
-
-it('disallows booking sessions that do not start at the beginning of an hour', function () {
-    $user = User::factory()->create(['role' => 'student']);
-    $this->actingAs($user);
-
-    $tutor = Tutor::factory()->for(User::factory())->create();
-
-    $response = $this->post('/bookings', [
-        'tutor_id' => $tutor->id,
-        'start' => now()->addDays(2)->startOfHour()->addMinutes(15)->toIso8601String(),
-        'end' => now()->addDays(2)->startOfHour()->addHours(1)->addMinutes(15)->toIso8601String(),
-    ]);
-
-    $response->assertSessionHasErrors(['start' => 'The session must start at the beginning of an hour (e.g., 10:00).']);
 });
 
 it('disallows booking in the past', function () {

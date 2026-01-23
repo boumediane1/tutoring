@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\AvailableRoom;
-use App\Rules\FullHourDuration;
-use App\Rules\StartOfHour;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,8 +29,6 @@ class StoreBookingRequest extends FormRequest
                 'required',
                 'date',
                 'after:now',
-                new StartOfHour,
-                new FullHourDuration,
                 new AvailableRoom,
             ],
             'end' => 'required|date|after:start',

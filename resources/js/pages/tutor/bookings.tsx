@@ -105,6 +105,7 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
                     dayMaxEvents={true}
                     weekends={true}
                     events={bookings}
+                    timeZone="UTC"
                     eventClick={handleEventClick}
                     eventClassNames="cursor-pointer"
                     slotDuration="01:00:00"
