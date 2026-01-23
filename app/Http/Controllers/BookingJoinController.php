@@ -14,9 +14,9 @@ class BookingJoinController extends Controller
     {
         $user = Auth::user();
 
-        // if (! $booking->canJoin()) {
-        //    return back()->with('error', 'You cannot join this session at this time.');
-        // }
+         if (! $booking->canJoin()) {
+            return back()->with('error', 'You cannot join this session at this time.');
+         }
 
         $isTutor = $user->tutor && $user->tutor->id === $booking->tutor_id;
         $isStudent = $user->student && $user->student->id === $booking->student_id;
