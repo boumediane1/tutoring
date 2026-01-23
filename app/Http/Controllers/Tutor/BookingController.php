@@ -21,8 +21,8 @@ class BookingController extends Controller
                 return [
                     'id' => (string) $booking->id,
                     'title' => $booking->student->user->name,
-                    'start' => $booking->start,
-                    'end' => $booking->end,
+                    'start' => $booking->start->toIso8601String(),
+                    'end' => $booking->end->toIso8601String(),
                     'status' => $booking->status,
                     'student' => [
                         'name' => $booking->student->user->name,

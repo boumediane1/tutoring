@@ -150,13 +150,16 @@ export default function BookingsPage({ bookings }: BookingsPageProps) {
                                     <span className="col-span-3 text-sm">
                                         {new Date(
                                             selectedBooking.start,
-                                        ).toLocaleString()}{' '}
+                                        ).toLocaleString('en-US', {
+                                            timeZone: 'UTC',
+                                        })}{' '}
                                         -{' '}
                                         {new Date(
                                             selectedBooking.end,
-                                        ).toLocaleTimeString([], {
+                                        ).toLocaleTimeString('en-US', {
                                             hour: '2-digit',
                                             minute: '2-digit',
+                                            timeZone: 'UTC',
                                         })}
                                     </span>
                                 </div>

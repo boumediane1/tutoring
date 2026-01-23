@@ -85,8 +85,10 @@ export default function Show({ booking }: { booking: Booking }) {
         if (booking.status !== 'confirmed') {
             return false;
         }
+
         const start = new Date(booking.start);
         const end = new Date(booking.end);
+        console.log('Booking start and end times:', start, end);
         return now >= start && now <= end;
     };
 
@@ -96,6 +98,7 @@ export default function Show({ booking }: { booking: Booking }) {
             month: 'long',
             day: 'numeric',
             year: 'numeric',
+            timeZone: 'UTC',
         });
     };
 
@@ -103,6 +106,7 @@ export default function Show({ booking }: { booking: Booking }) {
         return new Date(dateString).toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'UTC',
         });
     };
 
