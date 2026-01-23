@@ -63,7 +63,7 @@ export function AppSidebar() {
 
     if (auth.user.role === 'tutor') {
         mainNavItems.push({
-            title: 'Tutor Bookings',
+            title: 'Bookings',
             href: tutorBookings(),
             icon: BookOpen,
         });

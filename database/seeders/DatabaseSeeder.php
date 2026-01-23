@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
         'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1287&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1287&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=1272&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1544717297-fa15739a5447?q=80&w=1287&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1592621385612-4d7129426394?q=80&w=1287&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1288&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1613181013804-1dcba09e6a9d?q=80&w=1389&auto=format&fit=crop'
     ];
 
     /**

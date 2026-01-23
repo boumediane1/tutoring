@@ -31,19 +31,29 @@ class PrometheusServiceProvider extends ServiceProvider
          * want to export to prometheus
          */
         Prometheus::addGauge('Users count')
-            ->value(fn () => User::count());
+            ->helpText('Users count')
+            ->labels(['label'])
+            ->value(fn () => User::count(), ['Users count']);
 
         Prometheus::addGauge('Tutors count')
-            ->value(fn () => Tutor::count());
+            ->helpText('Tutors count')
+            ->labels(['label'])
+            ->value(fn () => Tutor::count(), ['Tutors count']);
 
         Prometheus::addGauge('Students count')
-            ->value(fn () => Student::count());
+            ->helpText('Students count')
+            ->labels(['label'])
+            ->value(fn () => Student::count(), ['Students count']);
 
         Prometheus::addGauge('Bookings count')
-            ->value(fn () => Booking::count());
+            ->helpText('Bookings count')
+            ->labels(['label'])
+            ->value(fn () => Booking::count(), ['Bookings count']);
 
         Prometheus::addGauge('Invoices count')
-            ->value(fn () => Invoice::count());
+            ->helpText('Invoices count')
+            ->labels(['label'])
+            ->value(fn () => Invoice::count(), ['Invoices count']);
 
         /*
          * Uncomment this line if you want to export
