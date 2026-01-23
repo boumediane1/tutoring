@@ -86,10 +86,12 @@ export default function Show({ booking }: { booking: Booking }) {
             return false;
         }
 
-        const start = new Date(booking.start);
-        const end = new Date(booking.end);
-        console.log('Booking start and end times:', start, end);
-        return now >= start && now <= end;
+        return true;
+
+        // const start = new Date(booking.start);
+        // const end = new Date(booking.end);
+        // console.log('Booking start and end times:', start, end);
+        // return now >= start && now <= end;
     };
 
     const formatDate = (dateString: string) => {
