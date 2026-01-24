@@ -33,7 +33,7 @@ it('creates an invoice when a booking is stored', function () {
     ]);
 });
 
-//it('allows student to see their invoices', function () {
+// it('allows student to see their invoices', function () {
 //    $user = User::factory()->create(['role' => 'student']);
 //    $student = Student::factory()->for($user)->create();
 //    $this->actingAs($user);
@@ -48,9 +48,9 @@ it('creates an invoice when a booking is stored', function () {
 //        ->component('billing/index')
 //        ->has('invoices.data', 3)
 //    );
-//});
+// });
 
-//it('allows tutor to see their invoices', function () {
+// it('allows tutor to see their invoices', function () {
 //    $user = User::factory()->create(['role' => 'tutor']);
 //    $tutor = Tutor::factory()->for($user)->create();
 //    $this->actingAs($user);
@@ -65,4 +65,4 @@ it('creates an invoice when a booking is stored', function () {
 //        ->component('billing/index')
 //        ->has('invoices.data', 2)
 //    );
-//});
+// });

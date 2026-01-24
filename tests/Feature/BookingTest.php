@@ -131,7 +131,7 @@ it('hides other students booking details', function () {
         ->and(collect($bookings)->where('title', 'Unavailable'))->toHaveCount(1);
 });
 
-//it('can show session details to authorized users', function () {
+// it('can show session details to authorized users', function () {
 //    $tutorUser = User::factory()->create(['role' => 'tutor']);
 //    $tutor = Tutor::factory()->for($tutorUser)->create();
 //
@@ -160,4 +160,4 @@ it('hides other students booking details', function () {
 //    Student::factory()->for($otherUser)->create();
 //    $this->actingAs($otherUser);
 //    $this->get("/bookings/show/{$booking->id}")->assertForbidden();
-//});
+// });

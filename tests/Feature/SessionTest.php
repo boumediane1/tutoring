@@ -6,7 +6,7 @@ use App\Models\Tutor;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
-//it('shows sessions for a student', function () {
+// it('shows sessions for a student', function () {
 //    $user = User::factory()->create(['role' => 'student']);
 //    $student = Student::factory()->create(['user_id' => $user->id]);
 //    $tutor = Tutor::factory()->create();
@@ -45,9 +45,9 @@ use Inertia\Testing\AssertableInertia as Assert;
 //        )
 //        ->has('sessions.links')
 //    );
-//});
+// });
 
-//it('shows sessions for a tutor', function () {
+// it('shows sessions for a tutor', function () {
 //    $user = User::factory()->create(['role' => 'tutor']);
 //    $tutor = Tutor::factory()->create(['user_id' => $user->id]);
 //    $student = Student::factory()->create();
@@ -79,4 +79,4 @@ use Inertia\Testing\AssertableInertia as Assert;
 //        )
 //        ->has('sessions.links')
 //    );
-//});
+// });
