@@ -1,4 +1,4 @@
-name: 'CI Orchestrator'
+name: 'Production Pipeline'
 
 on:
   release:
