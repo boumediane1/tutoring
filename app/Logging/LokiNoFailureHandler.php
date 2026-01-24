@@ -14,8 +14,8 @@ class LokiNoFailureHandler
         return new Logger('loki-no-failure', [
             new WhatFailureGroupHandler([
                 (new LokiHandler($config['handler_with']['apiConfig'], $config['level']))
-                    ->setFormatter(new LokiFormatter(...array_values($config['formatter_with'])))
-            ])
+                    ->setFormatter(new LokiFormatter(...array_values($config['formatter_with']))),
+            ]),
         ]);
     }
 }
