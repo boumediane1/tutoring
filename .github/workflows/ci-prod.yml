@@ -8,6 +8,8 @@ jobs:
   push-docker-image:
     uses: ./.github/workflows/push-image.yml
     secrets: inherit
+    with:
+      version: ${{ github.ref_name }}
 
   deploy:
     needs: [push-docker-image]

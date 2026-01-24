@@ -2,6 +2,10 @@ name: Publish Docker image
 
 on:
   workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
 
 jobs:
   push_to_registry:
@@ -39,6 +43,9 @@ jobs:
         uses: docker/metadata-action@v5.10.0
         with:
           images: ${{ matrix.image }}
+          tags: |
+            type=raw,value=${{ inputs.version }}
+            type=raw,value=latest
 
       - name: Build and push Docker image
         id: push
