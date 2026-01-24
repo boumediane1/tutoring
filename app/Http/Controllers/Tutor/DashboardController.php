@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Log;
 
 class DashboardController extends Controller
 {
     public function index(Request $request): Response
     {
+
         $tutor = $request->user()->tutor;
 
         $pendingBookingsQuery = $tutor->bookings()

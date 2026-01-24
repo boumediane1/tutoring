@@ -12,6 +12,7 @@
         "php": "^8.2",
         "bigbluebutton/bigbluebutton-api-php": "^2.3",
         "inertiajs/inertia-laravel": "^2.0",
+        "itspire/monolog-loki": "^2.1",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",

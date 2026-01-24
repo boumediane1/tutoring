@@ -1,9 +1,12 @@
 <?php
 
+use App\Logging\LokiNoFailureHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+
+parse_str(env('LOKI_LABELS', ''), $lokiLabels);
 
 return [
 
@@ -125,6 +128,35 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'loki' => [
+            'driver' => 'custom',
+            'level'  => env('LOG_LEVEL', 'debug'),
+            'via'    => LokiNoFailureHandler::class,
+
+            'formatter_with' => [
+                'labels'        => $lokiLabels,
+                'context'       => [],
+                'systemName'    => env('LOKI_SYSTEM_NAME', ''),
+                'extraPrefix'   => env('LOKI_EXTRA_PREFIX', ''),
+                'contextPrefix' => env('LOKI_CONTEXT_PREFIX', 'context_'),
+            ],
+
+            'handler_with' => [
+                'apiConfig' => [
+                    'entrypoint'  => env('LOKI_ENTRYPOINT', 'http://localhost:3100'),
+                    'context'     => [],
+                    'labels'      => [],
+                    'client_name' => gethostname(),
+                    'auth' => [
+                        'basic' => [
+                            env('LOKI_AUTH_BASIC_USER', ''),
+                            env('LOKI_AUTH_BASIC_PASSWORD', ''),
+                        ],
+                    ],
+                ],
+            ],
         ],
 
     ],
