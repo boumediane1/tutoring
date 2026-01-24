@@ -1,13 +1,10 @@
-name: Remote SSH Command
-#on: [ push ]
+name: Deploy
 on:
   workflow_call:
-  release:
-    types: [ published ]
 
 jobs:
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Execute remote SSH commands using password
@@ -17,7 +14,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-#          capture_stdout: true
           script: |
             cd /home/tutoring
             docker compose up -d

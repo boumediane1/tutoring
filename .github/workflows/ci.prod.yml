@@ -1,0 +1,15 @@
+name: 'CI Orchestrator'
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  push-docker-image:
+    uses: push-image.yml
+    secrets: inherit
+
+  deploy:
+    needs: [push-docker-image]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
