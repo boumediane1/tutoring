@@ -6,14 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Log;
 
 class DashboardController extends Controller
 {
     public function index(Request $request): Response
     {
-        Log::channel('loki')->info('Hello Loki from Laravel!', ['user_id' => 123]);
-
         $tutor = $request->user()->tutor;
 
         $pendingBookingsQuery = $tutor->bookings()
