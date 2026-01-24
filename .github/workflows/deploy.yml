@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          capture_stdout: true
+#          capture_stdout: true
           script: |
             cd /home/tutoring
             docker compose up -d
