@@ -12,6 +12,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request): Response
     {
+        Log::channel('loki')->info('Hello Loki from Laravel!', ['user_id' => 123]);
 
         $tutor = $request->user()->tutor;
 
