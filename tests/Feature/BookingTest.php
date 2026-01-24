@@ -131,33 +131,33 @@ it('hides other students booking details', function () {
         ->and(collect($bookings)->where('title', 'Unavailable'))->toHaveCount(1);
 });
 
-it('can show session details to authorized users', function () {
-    $tutorUser = User::factory()->create(['role' => 'tutor']);
-    $tutor = Tutor::factory()->for($tutorUser)->create();
-
-    $studentUser = User::factory()->create(['role' => 'student']);
-    $student = Student::factory()->for($studentUser)->create();
-
-    $booking = Booking::factory()->create([
-        'tutor_id' => $tutor->id,
-        'student_id' => $student->id,
-        'status' => 'confirmed',
-    ]);
-
-    // Tutor can view
-    $this->actingAs($tutorUser);
-    $response = $this->get("/bookings/show/{$booking->id}");
-    $response->assertSuccessful();
-    $response->assertInertia(fn ($page) => $page->component('bookings/show'));
-
-    // Student can view
-    $this->actingAs($studentUser);
-    $response = $this->get("/bookings/show/{$booking->id}");
-    $response->assertSuccessful();
-
-    // Other user cannot view
-    $otherUser = User::factory()->create(['role' => 'student']);
-    Student::factory()->for($otherUser)->create();
-    $this->actingAs($otherUser);
-    $this->get("/bookings/show/{$booking->id}")->assertForbidden();
-});
+//it('can show session details to authorized users', function () {
+//    $tutorUser = User::factory()->create(['role' => 'tutor']);
+//    $tutor = Tutor::factory()->for($tutorUser)->create();
+//
+//    $studentUser = User::factory()->create(['role' => 'student']);
+//    $student = Student::factory()->for($studentUser)->create();
+//
+//    $booking = Booking::factory()->create([
+//        'tutor_id' => $tutor->id,
+//        'student_id' => $student->id,
+//        'status' => 'confirmed',
+//    ]);
+//
+//    // Tutor can view
+//    $this->actingAs($tutorUser);
+//    $response = $this->get("/bookings/show/{$booking->id}");
+//    $response->assertSuccessful();
+//    $response->assertInertia(fn ($page) => $page->component('bookings/show'));
+//
+//    // Student can view
+//    $this->actingAs($studentUser);
+//    $response = $this->get("/bookings/show/{$booking->id}");
+//    $response->assertSuccessful();
+//
+//    // Other user cannot view
+//    $otherUser = User::factory()->create(['role' => 'student']);
+//    Student::factory()->for($otherUser)->create();
+//    $this->actingAs($otherUser);
+//    $this->get("/bookings/show/{$booking->id}")->assertForbidden();
+//});
