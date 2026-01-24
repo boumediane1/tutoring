@@ -1,11 +1,11 @@
 services:
   php:
-    image: oboumediane/tutoring-app-php:latest
+    image: oboumediane/tutoring-app-php:main
     pull_policy: always
 
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
+#   build:
+#     context: .
+#     dockerfile: Dockerfile
 
     container_name: tutoring-php
     restart: unless-stopped
@@ -17,21 +17,21 @@ services:
       - tutoring
 
   nginx:
-    image: oboumediane/tutoring-app-nginx:latest
-    pull_policy: always
+     image: oboumediane/tutoring-app-nginx:main
+     pull_policy: always
 
-#    build:
-#      context: .
-#      dockerfile: nginx.Dockerfile
+#   build:
+#     context: .
+#     dockerfile: nginx.Dockerfile
 
-    container_name: tutoring-nginx
-    restart: unless-stopped
-    ports:
-      - "8000:80"
-    depends_on:
-      - php
-    networks:
-      - tutoring
+     container_name: tutoring-nginx
+     restart: unless-stopped
+     ports:
+       - "8000:80"
+     depends_on:
+       - php
+     networks:
+       - tutoring
 
   postgres:
     image: postgres:18
@@ -76,6 +76,13 @@ services:
     networks:
       - tutoring
 
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - tutoring
 
 networks:
   tutoring:
