@@ -19,7 +19,7 @@ jobs:
 
   push-docker-image:
     needs: [tests, lint, sonar]
-    uses: push-image.yml
+    uses: ./.github/workflows/push-image.yml
     secrets: inherit
 
   deploy:
