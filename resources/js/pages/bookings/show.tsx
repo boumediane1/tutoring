@@ -82,6 +82,7 @@ export default function Show({ booking }: { booking: Booking }) {
     }, []);
 
     const canJoin = () => {
+        return true;
         if (booking.status !== 'confirmed') {
             return false;
         }
